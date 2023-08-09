@@ -1,4 +1,5 @@
-from utils import alphabet, continuation
+from utils import alphabet
+import os
 
 def decrypt(text, shift):
     # using list comprehension to create a new list free of any white spaces
@@ -42,7 +43,7 @@ def decrypt(text, shift):
     answer = input("Type 'yes' if you wish to continue and 'no' if you wish to stop: ").lower()
     
     if answer == 'yes':
-        continuation = True     
+        os.system('cls')   
     else:
         print('Thanks for using Caeasr Cipher. Come back later')
         exit()
