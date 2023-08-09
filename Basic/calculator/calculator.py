@@ -2,9 +2,9 @@ from logo import logo
 from calculate import operate
 
 def calculate():
-    result = 0
     print(logo)
-
+    
+    result = 0
     first_number = int(input("What's the first number? "))
     
     print('+\n')
