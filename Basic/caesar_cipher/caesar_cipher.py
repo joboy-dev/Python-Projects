@@ -1,6 +1,8 @@
 from encryption import encrypt
 from decryption import decrypt
-from utils import continuation
+from utils import continuation, logo
+
+print(logo)
 
 while continuation:
     direction = input("Type 'encode' to encrypt, type 'decode' to decrypt:\n").lower()
