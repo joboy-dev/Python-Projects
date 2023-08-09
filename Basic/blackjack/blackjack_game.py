@@ -1,5 +1,6 @@
 import random
 from simple_operation import operate_logic
+from logo import logo
 
 while True:
     play = input("Do you want to play a game of Blackjack? Type 'y' or 'n': ").lower()
@@ -10,6 +11,8 @@ while True:
     computer_cards = []
 
     if play == 'y':
+        print(logo)
+        
         for i in range(2):
             player_cards.append(random.choice(cards_pool))
             computer_cards.append(random.choice(cards_pool))
