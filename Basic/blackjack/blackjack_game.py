@@ -22,14 +22,11 @@ while True:
             
             if get_another_card == 'y':
                 player_cards.append(random.choice(cards_pool))
-                
                 operate_logic(player_cards, computer_cards)
                 break
-                
             elif get_another_card == 'n':
                 operate_logic(player_cards, computer_cards)
                 break
-            
             else:
                 print('Invalid input. Try again')
 
