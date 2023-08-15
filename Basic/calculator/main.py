@@ -7,10 +7,10 @@ def calculate():
     result = 0
     first_number = int(input("What's the first number? "))
     
-    print('+\n')
-    print('-\n')
-    print('*\n')
-    print('/\n')
+    print('+')
+    print('-')
+    print('*')
+    print('/')
     
     while True:
         result = operate(first_number)
