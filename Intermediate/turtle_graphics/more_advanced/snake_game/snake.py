@@ -1,6 +1,7 @@
 from turtle import Turtle
 
 MOVE_DISTANCE = 20
+STARTING_POSITIONS = [(0, 0), (-20, 0), (-40, 0)]
 
 UP = 90
 DOWN = 270
@@ -21,17 +22,31 @@ class Snake:
         '''Function to create the snake'''
         
         # since 3 squares are needed, use a for loop to add turtle objects to the segments
-        for i in range(3):
-            new_segment = Turtle(shape='square')
-            new_segment.color('white')
-            new_segment.penup()
-            # move turtle object to a specific location on screen
-            new_segment.goto(y=0, x=0 - (i*MOVE_DISTANCE))
-            self.segments.append(new_segment)    
+        for position in STARTING_POSITIONS:
+            self.add_segment(position)   
+    
+    
+    def add_segment(self, position):
+        '''Function to add a new segment to the list of segments'''
+        new_segment = Turtle(shape='circle')
+        new_segment.color('white')
+        new_segment.penup()
+        # move turtle object to a specific location on screen
+        new_segment.goto(position)
+        self.segments.append(new_segment) 
+    
+    
+    def extend_snake(self):
+        '''Function to increase length of snake'''
+        
+        # add new segment to the position of the last snake segment
+        self.add_segment(self.segments[-1].position())
+    
     
     def move(self):
         '''Function to move the snake'''
         
+        # connect all segments together
         for seg_no in range(len(self.segments) - 1, 0, -1):
             new_x = self.segments[seg_no -1].xcor()
             new_y = self.segments[seg_no -1].ycor()
@@ -41,7 +56,20 @@ class Snake:
             
         self.head_of_snake.forward(MOVE_DISTANCE)
     
-    
+    def reset(self):
+        '''Function to rest the snake'''
+        
+        # to clear the snake segments still on screen after game is over, send those segments off the screen to a different location
+        for seg in self.segments:
+            seg.goto(x=3000, y=3000)
+        
+        self.segments.clear()
+        # create new snake
+        self.create_snake()
+        self.head_of_snake = self.segments[0]
+        self.head_of_snake.color('grey')
+        
+        
     def up(self):
         '''Function to move snake up'''
         

@@ -1,7 +1,13 @@
 from turtle import Screen
 import time
-from snake import Snake
 
+from snake import Snake
+from food import Food
+from scoreboard import ScoreBoard
+
+program = True
+
+# while program:
 screen = Screen()
 screen.setup(width=600, height=600)
 # set screen background color
@@ -13,6 +19,10 @@ screen.tracer(0)
 
 # create a new snake object
 snake = Snake()
+# create new food object
+food = Food()
+# create nee scoreboard object
+scoreboard = ScoreBoard()
 
 screen.listen()
 screen.onkey(key='Up', fun=snake.up)
@@ -29,8 +39,28 @@ while game_on:
     
     # call function to move snake
     snake.move()
+    
+    # detect collission with food
+    if snake.head_of_snake.distance(food) < 15:
+        # move food to a new location on screen
+        food.refresh()
+        # increase snake length
+        snake.extend_snake()
+        scoreboard.update_score()
+        print(scoreboard.score)
+    
+    # detect collision with wall
+    x = snake.head_of_snake.xcor()
+    y = snake.head_of_snake.ycor()
+    if x == 300 or x == -300 or y == 300 or y == -300:
+        scoreboard.reset()
+        snake.reset()
         
-
+    # detect collision with snake body
+    for segment in snake.segments[1:]:
+        if snake.head_of_snake.distance(segment) < 10:
+            scoreboard.reset()
+            snake.reset()
+    
 screen.exitonclick()
-
     
