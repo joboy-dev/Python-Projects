@@ -10,7 +10,7 @@ print(hangman_art.logo)
 #Create blanks
 display = []
 
-for i in range(len(chosen_word)):
+for i in range(word_length):
     display.append('_')
     
 print('  '.join(display))
