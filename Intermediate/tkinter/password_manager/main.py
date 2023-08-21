@@ -2,6 +2,7 @@ from tkinter import *
 from tkinter import messagebox
 import random
 import pyperclip
+import json
 
 BG_COLOR = 'gray'
 FG_COLOR = 'white'
@@ -49,27 +50,85 @@ def save_password():
     email = email_input.get()
     password = password_input.get()
     
+    new_data = {
+        website: {
+            "email": email,
+            "password": password
+        },
+    }
+    
     # check if user entered anything in the field
     if len(website) > 0 and len(email) > 0 and len(password) > 0:
         # ask confirmation
         confirmation = messagebox.askokcancel(title=website, message=f'These are the details entered:\nEmail: {email}\nPassword: {password}\n\nIs it okay to save?')
         
         if confirmation:
-            with open('Intermediate/tkinter/password_manager/passwords.txt', 'a') as file:
-                file.write(f'{website} | {email} | {password}\n')
+            try:
+                with open('Intermediate/tkinter/password_manager/passwords.json', 'r') as json_file:
+                    # writing to json file
+                    # json.dump(obj=new_data, fp=json_file, indent=4)
+                    
+                    # loading data
+                    data = json.load(fp=json_file)
+                    # updating data
+                    data.update(new_data)
+                    
+                with open('Intermediate/tkinter/password_manager/passwords.json', 'w') as json_file:
+                    # write data back into file
+                    json.dump(obj=data, fp=json_file, indent=4)
 
-            message_label.config(text='Password saved successfully!', fg='white', bg='green') 
-            
-            # messagebox.showinfo(title='Success', message='Password saved successfully')
-            
-            # clear fields
-            website_input.delete(0, END)
-            password_input.delete(0, END)
-        
+                message_label.config(text='Password saved successfully!', fg='white', bg='green') 
+                
+                # messagebox.showinfo(title='Success', message='Password saved successfully')
+                
+                # clear fields
+                website_input.delete(0, END)
+                password_input.delete(0, END)
+                
+            except FileNotFoundError:
+                with open('Intermediate/tkinter/password_manager/passwords.json', 'w') as json_file:
+                    # write data into file
+                    json.dump(obj=new_data, fp=json_file, indent=4)
+                    message_label.config(text='Password saved successfully!', fg='white', bg='green') 
+                    # clear fields
+                    website_input.delete(0, END)
+                    password_input.delete(0, END)
+                    
+            except json.JSONDecodeError:
+                with open('Intermediate/tkinter/password_manager/passwords.json', 'w') as json_file:
+                    # write data into file
+                    json.dump(obj=new_data, fp=json_file, indent=4)
+                    
+                    message_label.config(text='Password saved successfully!', fg='white', bg='green') 
+                    # clear fields
+                    website_input.delete(0, END)
+                    password_input.delete(0, END)
+                    
     else:
         messagebox.showwarning(title='Field(s) empty', message='Please do not leave any field empty')
         
         # message_label.config(text='No field must be left empty.', fg='white', bg='red') 
+
+
+# ---------------------------- SEARCH FUNCTIONALITY ------------------------------- #
+def search():
+    '''Function to search for a website and show the email and password'''
+    
+    website = website_input.get()
+    
+    if len(website) > 0:
+        with open('Intermediate/tkinter/password_manager/passwords.json', 'r') as json_file:
+            # loading data
+            data = json.load(fp=json_file)
+            
+            try:
+                messagebox.showinfo(title=website, message=f"Email: {data[website]['email']}\nPassword: {data[website]['password']}")
+            except KeyError:
+                messagebox.showerror(title='Error', message=f'You do not have a password saved for {website}')
+                
+    else:
+        messagebox.showwarning(title='Field empty', message='Please do not leave this field empty')
+        
 
 
 # ---------------------------- UI SETUP ------------------------------- #
@@ -99,8 +158,8 @@ password_label.grid(row=3, column=0)
 # ----------------- INPUT FIELDS -------------------- #
 
 # website input
-website_input = Entry(bg='white', fg='black', width=40, border=1, borderwidth=0.5, highlightthickness=0, font=FONT_SPECS)
-website_input.grid(row=1, column=1, pady=5, columnspan=2)
+website_input = Entry(bg='white', fg='black', width=27, border=1, borderwidth=0.5, highlightthickness=0, font=FONT_SPECS)
+website_input.grid(row=1, column=1, pady=5)
 # immediately you open the app, you can start typing in this entry field
 website_input.focus()
 
@@ -115,6 +174,10 @@ password_input = Entry(bg='white', fg='black', width=27, border=1, borderwidth=0
 password_input.grid(row=3, column=1, pady=5)
 
 # ------------------ BUTTONS ------------------------ #
+
+# search button
+search_button = Button(text='Search', command=search, bg=BG_COLOR, fg=FG_COLOR, border=0, borderwidth=1, highlightthickness=0, width=12)
+search_button.grid(row=1, column=2, pady=5)
 
 # generate password button
 generate_password_button = Button(text='Generate', command=generate_password, bg=BG_COLOR, fg=FG_COLOR, border=0, borderwidth=1, highlightthickness=0, width=12)
