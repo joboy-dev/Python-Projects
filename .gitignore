@@ -2,3 +2,4 @@ __pycache__
 venv
 passwords.json
 words_to_learn.csv
+.env

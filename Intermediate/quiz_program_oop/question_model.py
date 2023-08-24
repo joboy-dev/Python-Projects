@@ -8,7 +8,6 @@ class QuestionModel:
         
         # initialize quiz brain class
         quiz_brain = QuizBrain()
-        score = 0
         
         for question in range(len(question_data)):
             correct_answer = question_data[question]['answer']
@@ -16,5 +15,6 @@ class QuestionModel:
             user_answer = input(f"Q.{question+1}: {current_question} (True/False)? ").capitalize()
             
             # call function to calculate score
-            quiz_brain.calculate_score(user_answer, correct_answer, score, question)
+            quiz_brain.calculate_score(user_answer, correct_answer, question)
+            
             

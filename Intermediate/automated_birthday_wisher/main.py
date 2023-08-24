@@ -2,11 +2,19 @@ import smtplib
 import datetime as dt
 import random
 import pandas as pd
+import os
+from dotenv import load_dotenv
+from pathlib import Path
 
-MY_EMAIL = 'devjoboy@gmail.com'
-PASSWORD = 'jdeasnpdzvzwjqqw'
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
+# print(BASE_DIR)
 
-birthday_data = pd.read_csv('Intermediate/automated_birthday_wisher/birthdays.csv')
+load_dotenv(os.path.join(BASE_DIR, ".env"))
+
+MY_EMAIL = os.getenv('MY_EMAIL')
+PASSWORD = os.getenv('PASSWORD')
+
+birthday_data = pd.read_csv('birthdays.csv')
 birthdays = birthday_data.to_dict(orient='records')
 
 now = dt.datetime.now()
@@ -18,7 +26,7 @@ for birthday in birthdays:
         # print(birthday)
         random_letter_no = random.randint(1, 3)
         
-        with open(f'Intermediate/automated_birthday_wisher/letter_templates/letter_{random_letter_no}.txt') as birthday_letter:
+        with open(f'letter_templates/letter_{random_letter_no}.txt') as birthday_letter:
             letter = birthday_letter.read()
             
             letter_to_send = letter.replace('[NAME]', birthday['name'])

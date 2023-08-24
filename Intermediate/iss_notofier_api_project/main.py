@@ -2,6 +2,14 @@ import requests
 from datetime import datetime
 import smtplib
 import time
+import os
+from dotenv import load_dotenv
+from pathlib import Path
+
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
+# print(BASE_DIR)
+
+load_dotenv(os.path.join(BASE_DIR, ".env"))
 
 def iss_overhead():
     '''Function to check if the ISS is close'''
@@ -41,11 +49,11 @@ def is_night():
     
 
 while True:
-    MY_LAT = 51.507351 # Your latitude
-    MY_LONG = -0.127758 # Your longitude
+    MY_LAT = 6.586970 # Your latitude
+    MY_LONG = 3.500170 # Your longitude
 
-    MY_EMAIL = 'devjoboy@gmail.com'
-    PASSWORD = 'jdeasnpdzvzwjqqw'
+    MY_EMAIL = os.getenv('MY_EMAIL')
+    PASSWORD = os.getenv('PASSWORD')
     
     parameters = {
         "lat": MY_LAT,
