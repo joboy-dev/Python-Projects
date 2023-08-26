@@ -1,6 +1,5 @@
 import requests
 import smtplib
-from email.mime.text import MIMEText
 import datetime as dt
 from dateutil.relativedelta import relativedelta
 import os
@@ -60,14 +59,23 @@ news_api_response = requests.get(news_api, params=news_api_params)
 news_data = news_api_response.json()
 
 # get first 3 articles
-articles = news_data['articles'][0:2]
-print(articles)
+articles = news_data['articles'][0:3]
+# print(articles)
 
 article_message = ''
 
 for article in articles:
-    article_message += f"Headline: {article['title']}\nBrief: {article['description']}\n\n"
+    article_headline = article['title']
+    article_body = article['description']
     
+    article_message += f"Headline: {article_headline}\nBrief: {article_body}\n\n"
+    
+# encode article message
+encoded_message = article_message.encode('utf-8')
+article_message = encoded_message.decode('utf-8')
+
+# print(encoded_message)
+
 print(article_message)
 
 # ---------------------- STOCK DATA USAGE -------------------- #
@@ -86,34 +94,17 @@ stock_price_difference = yesterday_closing_price - day_before_yesterday_closing_
 percentage_change = int((stock_price_difference / day_before_yesterday_closing_price) * 100)
 
 # -------------------- NEWS DATA USAGE ------------------------ #
+try:
+    with smtplib.SMTP('smtp.gmail.com') as conn:
+        conn.starttls()
+        conn.login(user=MY_EMAIL, password=PASSWORD)
 
-# print(opening_message)
-
-# convert message into utf-8 standard
-# message_to_send = MIMEText(article_message, 'plain', 'utf-8')
-
-with smtplib.SMTP('smtp.gmail.com') as conn:
-    conn.starttls()
-    conn.login(user=MY_EMAIL, password=PASSWORD)
-    
-    # if percentage_change >= 0 and percentage_change <= 5:
-    #     opening_message = f'TSLA: ↑ {percentage_change}%'
-    #     conn.sendmail(from_addr=MY_EMAIL, to_addrs='devtesting941@gmail.com', msg=f"Subject:    {COMPANY_NAME} Stock Price Alert\n\n{article_message}")
-    # elif percentage_change < 0 and percentage_change >= -5:
-    #     opening_message = f'TSLA: ↓ {abs(percentage_change)}%'
-    #     conn.sendmail(from_addr=MY_EMAIL, to_addrs='devtesting941@gmail.com', msg=f"Subject:{COMPANY_NAME} Stock Price Alert\n\n{article_message}")
-    
-    conn.sendmail(from_addr=MY_EMAIL, to_addrs='devtesting941@gmail.com', msg=f"Subject:{COMPANY_NAME} Stock Price Alert\n\n{article_message}")
-
-
-#Optional: Format the SMS message like this: 
-"""
-TSLA: 🔺2%
-Headline: Were Hedge Funds Right About Piling Into Tesla Inc. (TSLA)?. 
-Brief: We at Insider Monkey have gone over 821 13F filings that hedge funds and prominent investors are required to file by the SEC The 13F filings show the funds' and investors' portfolio positions as of March 31st, near the height of the coronavirus market crash.
-or
-"TSLA: 🔻5%
-Headline: Were Hedge Funds Right About Piling Into Tesla Inc. (TSLA)?. 
-Brief: We at Insider Monkey have gone over 821 13F filings that hedge funds and prominent investors are required to file by the SEC The 13F filings show the funds' and investors' portfolio positions as of March 31st, near the height of the coronavirus market crash.
-"""
-
+        if percentage_change >= 0 and percentage_change <= 5:
+            opening_message = f'TSLA: ↑ {percentage_change}%'
+            conn.sendmail(from_addr=MY_EMAIL, to_addrs='devtesting941@gmail.com', msg=f"Subject:    {COMPANY_NAME} Stock Price Alert\n\n{article_message}")
+        elif percentage_change < 0 and percentage_change >= -5:
+            opening_message = f'TSLA: ↓ {abs(percentage_change)}%'
+            conn.sendmail(from_addr=MY_EMAIL, to_addrs='devtesting941@gmail.com', msg=f"Subject:{COMPANY_NAME} Stock Price Alert\n\n{article_message}")
+            
+except UnicodeEncodeError as e:
+    print(f'ERROR: {e}')
