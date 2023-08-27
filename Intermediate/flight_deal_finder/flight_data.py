@@ -4,9 +4,6 @@ from pathlib import Path
 from dotenv import load_dotenv
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
-import urllib.parse
-
-# from flight_search import FlightSearch
 
 class FlightData:
     '''This class is responsible for structuring the flight data.'''
@@ -19,14 +16,12 @@ class FlightData:
         load_dotenv(os.path.join(BASE_DIR, ".env"))
         
         TEQUILA_API_KEY = os.getenv('TEQUILA_API_KEY')
-        __tequila_search_endpoint = 'https://api.tequila.kiwi.com/v2/search'
+        self.__tequila_search_endpoint = 'https://api.tequila.kiwi.com/v2/search'
         
         CURRENT_LOCATION_IATA = 'LON'
         
         # ------------- USING DATETIME MODULE ----------------- #
         today = datetime.now().date()
-        
-        # six_months = today + timedelta(days=6*30)
         
         tomorrow = (today + relativedelta(days=1)).strftime('%d/%m/%Y')
         six_months = (today + relativedelta(months=6)).strftime('%d/%m/%Y')
@@ -36,22 +31,26 @@ class FlightData:
         # print(tomorrow)
         # print(urllib.parse.quote(twenty_eight_days))
         
-        __parameters = {
+        self.__parameters = {
             'fly_from': CURRENT_LOCATION_IATA,
             'fly_to': destination_iata,
-            'date_from': urllib.parse.quote(tomorrow),
-            'date_to': urllib.parse.quote(six_months),
-            'return_from': urllib.parse.quote(seven_days),
-            'return_to': urllib.parse.quote(twenty_eight_days),
+            'date_from': tomorrow,
+            'date_to': six_months,
+            'return_from': seven_days,
+            'return_to': twenty_eight_days,
             'curr': 'GBP'
         }
         
-        __headers = {
+        self.__headers = {
             'apikey': TEQUILA_API_KEY,
         }
         
+        
+    def get_flight_data(self):
+        '''Function to get all necessary flight data'''
+        
         try:
-            tequila_search_response = requests.get(url=__tequila_search_endpoint, params=__parameters, headers=__headers)
+            tequila_search_response = requests.get(url=self.__tequila_search_endpoint, params=self.__parameters, headers=self.__headers)
             # print(tequila_search_response)
             tequila_search_response.raise_for_status()
             
@@ -59,9 +58,14 @@ class FlightData:
             # print(output)
             
             # get all flight details for all flights and store in a variable
-            self.all_flights = output['data']
+            all_flights = output['data']
             # print(len(self.all_flights))
+            
+            return all_flights
             
         except requests.exceptions.HTTPError as http_err:
             print(f"HTTP error occurred: {http_err}")
             print("Response content:", tequila_search_response.content)
+        except requests.exceptions.ConnectionError as e:
+            print(e)
+            print('Ensure you are connected to the internet')

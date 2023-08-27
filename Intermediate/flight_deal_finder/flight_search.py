@@ -26,14 +26,20 @@ class FlightSearch:
         
     
     def run_flight_search(self):
-        tequila_response = requests.get(url=self.__tequila_endpoint, params=self.__parameters, headers=self.__headers)
-        tequila_response.raise_for_status()
+        '''This fuction runs a flight search and returns appropriate IATA code'''
         
-        output = tequila_response.json()
-        
-        # get iata code
-        iataCode = output['locations'][0]['code']
-        
-        return iataCode
+        try:
+            tequila_response = requests.get(url=self.__tequila_endpoint, params=self.__parameters, headers=self.__headers)
+            tequila_response.raise_for_status()
+            
+            output = tequila_response.json()
+            
+            # get iata code
+            iataCode = output['locations'][0]['code']
+            
+            return iataCode
+        except requests.exceptions.ConnectionError as e:
+            print(e)
+            print('Ensure you are connected to the internet\n\n')
         
         

@@ -17,13 +17,19 @@ class NotificationManager:
         self.__PASSWORD = os.getenv('PASSWORD')
         
     
-    def send_notification(self, flight_budget, min_flight_price, message):
+    def send_notification(self, email_list, flight_budget, min_flight_price, message):
         '''Function to send notification about a cheap flight'''
         
         # check if cheapest flight rice is within your flight budget
         if min_flight_price <= flight_budget:
-            with smtplib.SMTP('smtp.gmail.com') as conn:
-                conn.starttls()
-                conn.login(user=self.__EMAIL, password=self.__PASSWORD)
-                
-                conn.sendmail(from_addr=self.__EMAIL, to_addrs='devtesting941@gmail.com', msg=message)
+            try:
+                with smtplib.SMTP('smtp.gmail.com') as conn:
+                    conn.starttls()
+                    conn.login(user=self.__EMAIL, password=self.__PASSWORD)
+                    
+                    conn.sendmail(from_addr=self.__EMAIL, to_addrs=email_list, msg=message)
+                    
+                print('Email sent successfully')
+            except smtplib.SMTPException as e:
+                print(f'An error occured: {e}\n\n')
+        
