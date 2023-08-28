@@ -45,11 +45,16 @@ while process_data:
                 process_data = False
         
         except AttributeError as e:
-            print(f'{e}\n\n')
+            print(f'Exception occured: {e}\n\nCheck your internet connection\n\n')
             process_data = False
+            exit()
         # catch exception relating to email_list
         except NameError:
             email_list = []
+            exit()
+        except Exception as exception:
+            print(f'Exception occured: {exception}\n\nCheck your internet connection')
+            exit()
 
 # --------------------------------------------------------------------------------------- #
 # --------------------------------------------------------------------------------------- #
@@ -100,12 +105,6 @@ try:
             notification_manager.send_notification(flight_budget=city['lowestPrice'], min_flight_price=min_price, message=message, email_list=email_list)
         else:
             print('No emails to send to')
-        
-        
-        
-        # print(least_priced_flight)
-        
-        # print(f'{city_name}: {min_price}')
 
         
         # ------------------------------------------------------ #
