@@ -123,4 +123,3 @@ try:
 # catch exception relating to 
 except AttributeError as e:
     print(e)
-
