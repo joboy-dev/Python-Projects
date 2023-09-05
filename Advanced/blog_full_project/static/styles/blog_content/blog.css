@@ -1,0 +1,89 @@
+/* ----------------------- HERO SECTION ----------------------*/
+
+#post-hero::before {
+    position: absolute;
+    content: '';
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: -1;
+}
+
+#post-hero .content {
+    /* z-index: 1; */
+    position: relative;
+    z-index: 2; /* Place it above the background image */
+    color: var(--white-color); /* Text color on top of the background image */
+    text-align: center;
+    padding: 20px;
+}
+
+#post-hero::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Adjust the overlay color and opacity */
+    z-index: 0; /* Place it between the content and background image */
+}
+
+
+.post-banner {
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+.post-hero-content {
+    margin: 100px auto;
+    animation: scaleUp 1s ease-in;
+}
+
+.post-hero-content h1 {
+    font-size: 100px;
+}
+
+.post-hero-content h1 span {
+    text-decoration: underline;
+}
+
+.post-hero-content h4 {
+    font-size: 40px;
+    font-weight: normal;
+}
+
+#post-content{
+    margin: 40px 20%;
+    font-size: 20px;
+    font-weight: lighter;
+    text-align: justify;
+    animation: moveInFromUp 1s ease-in;
+}
+
+.edit-delete-buttons {
+    display: flex;
+    align-items: center;
+    justify-content: end;
+    gap: 40px;
+    padding: 15px 10%;
+    animation: moveInFromRight 1s ease-in;
+}
+
+.edit-delete-buttons a {
+    text-decoration: none;
+    color: white;
+    font-size: 15px;
+    background-color: transparent;
+    border: none;
+    transition: 0.3s ease-in;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.edit-delete-buttons a:hover {
+    scale: 1.05;
+}

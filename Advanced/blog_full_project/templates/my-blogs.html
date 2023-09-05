@@ -1,0 +1,108 @@
+{% extends 'base.html' %}
+
+{% block page %}My Blogs{% endblock %}
+
+{% block css_links %}
+    <link rel="stylesheet" href="../static/styles/index/index.css" media="screen and (max-width: 2000px)">
+    <link rel="stylesheet" href="../static/styles/index/index.css" media="screen and (max-width: 768px)">
+    <link rel="stylesheet" href="../static/styles/index/index.css" media="screen and (max-width: 480px)">
+
+    <link rel="stylesheet" href="../static/styles/my_blogs/blogs.css" media="screen and (max-width: 2000px)">
+    <link rel="stylesheet" href="../static/styles/my_blogs/blogs.css" media="screen and (max-width: 768px)">
+    <link rel="stylesheet" href="../static/styles/my_blogs/blogs.css" media="screen and (max-width: 480px)">
+{% endblock %}
+
+{% block content %}
+
+    <!-- HERO SECTION -->
+    <section id="blog-hero">
+        <div class="content">
+            {% include 'constants/navbar.html' %}
+
+            <div class="blog-hero-content">
+                <h1>Blogs written by you</h1>
+            </div>
+        </div>
+    </section>
+    <!-- END HERO SECTION -->
+
+    <!-- BLOG LIST SECTION -->
+    <section id="blog-list">
+        <div class="blog">
+            <a class="blog-title" href="{{ url_for('get_blog', id=1) }}">Blog Title</a>
+            <p class="blog-content">This is a new blog by Joboy.</p>
+            <p class="attribution">Posted by <b><em>you</em></b> on <em>2, September 2023, 14:25</em></p>
+
+            <div class="edit-delete-buttons">
+                <a href="#" class="edit"><i class="fa-solid fa-pencil"></i>  Edit</a>
+                <a href="#" class="delete"><i class="fa-solid fa-trash"></i>  Delete</a>
+            </div>
+
+            <hr color="red">
+        </div>
+
+        <div class="blog">
+            <a class="blog-title" href="{{ url_for('get_blog', id=1) }}">Blog Title</a>
+            <p class="blog-content">This is a new blog by Joboy.</p>
+            <p class="attribution">Posted by <b><em>you</em></b> on <em>2, September 2023, 14:25</em></p>
+
+            <div class="edit-delete-buttons">
+                <a href="#" class="edit"><i class="fa-solid fa-pencil"></i>  Edit</a>
+                <a href="#" class="delete"><i class="fa-solid fa-trash"></i>  Delete</a>
+            </div>
+
+            <hr color="red">
+        </div>
+
+        <div class="blog">
+            <a class="blog-title" href="{{ url_for('get_blog', id=1) }}">Blog Title</a>
+            <p class="blog-content">This is a new blog by Joboy.</p>
+            <p class="attribution">Posted by <b><em>you</em></b> on <em>2, September 2023, 14:25</em></p>
+            
+            <div class="edit-delete-buttons">
+                <a href="#" class="edit"><i class="fa-solid fa-pencil"></i>  Edit</a>
+                <a href="#" class="delete"><i class="fa-solid fa-trash"></i>  Delete</a>
+            </div>
+            
+            <hr color="red">
+        </div>
+
+        <div class="blog">
+            <a class="blog-title" href="{{ url_for('get_blog', id=1) }}">Blog Title</a>
+            <p class="blog-content">This is a new blog by Joboy.</p>
+            <p class="attribution">Posted by <b><em>you</em></b> on <em>2, September 2023, 14:25</em></p>
+            
+            <div class="edit-delete-buttons">
+                <a href="#" class="edit"><i class="fa-solid fa-pencil"></i>  Edit</a>
+                <a href="#" class="delete"><i class="fa-solid fa-trash"></i>  Delete</a>
+            </div>
+            
+            <hr color="red">
+        </div>
+
+        <div class="blog">
+            <a class="blog-title" href="{{ url_for('get_blog', id=1) }}">Blog Title</a>
+            <p class="blog-content">This is a new blog by Joboy.</p>
+            <p class="attribution">Posted by <b><em>you</em></b> on <em>2, September 2023, 14:25</em></p>
+            
+            <div class="edit-delete-buttons">
+                <a href="#" class="edit"><i class="fa-solid fa-pencil"></i>  Edit</a>
+                <a href="#" class="delete"><i class="fa-solid fa-trash"></i>  Delete</a>
+            </div>
+            
+            <hr color="red">
+        </div>
+
+        <div class="more-button">
+            <p>Older Posts  <i class="fa-solid fa-arrow-right"></i></p>
+        </div>
+    </section>
+
+    <!-- END BLOG LIST SECTION -->
+
+    {% include 'constants/footer.html' %}
+
+    {% block script %} <script src="../static/script/animations.js"></script> {% endblock %}
+
+{% endblock %}
+

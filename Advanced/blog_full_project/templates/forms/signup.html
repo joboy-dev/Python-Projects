@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+
+{% block page %}Sign Up{% endblock %}
+
+{% block css_links %}
+    <link rel="stylesheet" href="../../static/styles/form/form.css" media="screen and (max-width: 2000px)">
+{% endblock %}
+
+{% block content %}
+
+    <!-- SIGNUP SECTION -->
+    <section id="form-container">
+        <form action="{{ url_for('signup') }}" method="post" class="form">
+            <div class="heading">
+                <h1>Sign up</h1>
+                <hr>
+            </div>
+
+            {% include 'constants/flash_messages.html' %}
+
+            <div class="form-field">
+                {{ form.username.label }} <br>
+                {{ form.username }}
+            </div>
+
+            <div class="form-field">
+                {{ form.email.label }} <br>
+                {{ form.email }}
+            </div>
+
+            <div class="form-field">
+                {{ form.password.label }} <br>
+                {{ form.password }}
+            </div>
+
+            <div class="form-field">
+                {{ form.password2.label }} <br>
+                {{ form.password2 }}
+            </div>
+
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            
+            {{ form.submit }}
+
+
+            <!-- <div class="form-field">
+                <label for="username">Username</label><br>
+                <input type="text" id="username" name="username" placeholder="johndoe123" required>
+            </div>
+
+            <div class="form-field">
+                <label for="username">Email</label><br>
+                <input type="email" id="email" name="email" placeholder="johndoe@gmail.com" required>
+            </div>
+
+            <div class="form-field">
+                <label for="username">Password</label><br>
+                <input type="password" id="password" name="password" placeholder="Enter 8 or more characters" required>
+            </div>
+
+            <div class="form-field">
+                <label for="username">Confirm Password</label><br>
+                <input type="password" id="confirm-password" name="confirm-password" placeholder="Enter 8 or more characters" required>
+            </div> -->
+
+            <!-- <button class="submit-button">Sign up</button> -->
+
+            <p>Already have an account? <a href="{{url_for('login')}}">Log in.</a></p><br>
+            <p class="go-home"><a href="{{ url_for('home') }}">Go back home</a></p>
+
+        </form>
+    </section>
+    <!-- END SIGNUP SECTION -->
+{% endblock %}

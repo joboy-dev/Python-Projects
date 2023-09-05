@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+
+{% block page %}Home{% endblock %}
+
+{% block css_links %}
+    <link rel="stylesheet" href="../static/styles/index/index.css" media="screen and (max-width: 2000px)">
+    <link rel="stylesheet" href="../static/styles/index/index.css" media="screen and (max-width: 768px)">
+    <link rel="stylesheet" href="../static/styles/index/index.css" media="screen and (max-width: 480px)">
+{% endblock %}
+
+{% block content %}
+
+    <!-- HERO SECTION -->
+    <section id="hero">
+        <div class="content">
+            {% include 'constants/navbar.html' %}
+
+            <div class="hero-content">
+                <h1><span>Blog</span>Now!</h1>
+                <h4>Where blogging never stops...</h4>
+        
+                <a href="{{url_for('login')}}" class="cta-button">Get Started</a>
+            </div>
+        </div>
+    </section>
+    <!-- END HERO SECTION -->
+
+    <!-- BLOG LIST SECTION -->
+    <section id="blog-list">
+        <div class="blog">
+            <a class="blog-title" href="{{ url_for('get_blog', id=1) }}">Blog Title</a>
+            <p class="blog-content">This is a new blog by Joboy.</p>
+            <p class="attribution">Posted by <b><em>Joseph</em></b> on <em>2, September 2023, 14:25</em></p>
+            <hr color="red">
+        </div>
+
+        <div class="blog">
+            <a class="blog-title" href="{{ url_for('get_blog', id=1) }}">Blog Title</a>
+            <p class="blog-content">This is a new blog by Joboy.</p>
+            <p class="attribution">Posted by <b><em>Joseph</em></b> on <em>2, September 2023, 14:25</em></p>
+            <hr color="red">
+        </div>
+
+        <div class="blog">
+            <a class="blog-title" href="{{ url_for('get_blog', id=1) }}">Blog Title</a>
+            <p class="blog-content">This is a new blog by Joboy.</p>
+            <p class="attribution">Posted by <b><em>Joseph</em></b> on <em>2, September 2023, 14:25</em></p>
+            <hr color="red">
+        </div>
+
+        <div class="blog">
+            <a class="blog-title" href="{{ url_for('get_blog', id=1) }}">Blog Title</a>
+            <p class="blog-content">This is a new blog by Joboy.</p>
+            <p class="attribution">Posted by <b><em>Joseph</em></b> on <em>2, September 2023, 14:25</em></p>
+            <hr color="red">
+        </div>
+
+        <div class="blog">
+            <a class="blog-title" href="{{ url_for('get_blog', id=1) }}">Blog Title</a>
+            <p class="blog-content">This is a new blog by Joboy.</p>
+            <p class="attribution">Posted by <b><em>Joseph</em></b> on <em>2, September 2023, 14:25</em></p>
+            <hr color="red">
+        </div>
+
+        <div class="more-button">
+            <p>Older Posts  <i class="fa-solid fa-arrow-right"></i></p>
+        </div>
+    </section>
+
+    <!-- END BLOG LIST SECTION -->
+
+    {% include 'constants/footer.html' %}
+
+    {% block script %} <script src="../static/script/animations.js"></script> {% endblock %}
+
+{% endblock %}
+

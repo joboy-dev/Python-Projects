@@ -1,27 +1,6 @@
 from selenium import webdriver
 from selenium.webdriver.common.by import By  # for finding elements
 
-# chrome_driver_path = "C:/Development/chromedriver.exe"
-# driver = webdriver.Chrome()
-
-# # open up a webpage
-# driver.get('https://www.amazon.com/SAMSUNG-Smartphone-Unlocked-Brightest-Processor/dp/B09MVZ93YN/ref=sr_1_2_sspa?keywords=samsung%2Bgalaxy%2Bs21&qid=1693258405&sr=8-2-spons&sp_csd=d2lkZ2V0TmFtZT1zcF9hdGY&th=1')
-
-# # finding and selecting html elements to act on
-# price = driver.find_element(by=By.CSS_SELECTOR, value='.a-price .a-offscreen')
-# print(price.text)
-
-
-# # close the driver
-# driver.close()
-
-
-# driver.find_elements(by=By.CSS_SELECTOR, value='.a-price .a-offscreen')
-
-# How an xpath looks like
-# //*[@id="classifiers"]/div[10]/button
-
-
 # CHALLENGE
 driver = webdriver.Chrome()
 
@@ -43,3 +22,24 @@ events_dict = {
 print(events_dict)
 
 driver.close()
+
+
+# chrome_driver_path = "C:/Development/chromedriver.exe"
+# driver = webdriver.Chrome()
+
+# # open up a webpage
+# driver.get('https://www.amazon.com/SAMSUNG-Smartphone-Unlocked-Brightest-Processor/dp/B09MVZ93YN/ref=sr_1_2_sspa?keywords=samsung%2Bgalaxy%2Bs21&qid=1693258405&sr=8-2-spons&sp_csd=d2lkZ2V0TmFtZT1zcF9hdGY&th=1')
+
+# # finding and selecting html elements to act on
+# price = driver.find_element(by=By.CSS_SELECTOR, value='.a-price .a-offscreen')
+# print(price.text)
+
+
+# # close the driver
+# driver.close()
+
+
+# driver.find_elements(by=By.CSS_SELECTOR, value='.a-price .a-offscreen')
+
+# How an xpath looks like
+# //*[@id="classifiers"]/div[10]/button

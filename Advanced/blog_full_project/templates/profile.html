@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% block page %}My Profile{% endblock %}
+
+{% block css_links %}
+    <link rel="stylesheet" href="../static/styles/profile/profile.css" media="screen and (max-width: 2000px)">
+    <link rel="stylesheet" href="../static/styles/profile/profile.css" media="screen and (max-width: 768px)">
+    <link rel="stylesheet" href="../static/styles/profile/profile.css" media="screen and (max-width: 480px)">
+{% endblock %}
+
+{% block styles %}
+    <style>
+        .profile-picture-container {
+            height: 200px;
+            width: 200px;
+            background-image: url('../static/images/edit-bg.jpg');
+            background-size: 100%;
+            background-repeat: no-repeat;
+            background-position: center;
+            border: 2px solid var(--red-color);
+            border-radius: 100px;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+
+    <!-- HERO SECTION -->
+    <section id="profile-hero">
+        <div class="content">
+            {% include 'constants/navbar.html' %}
+
+            <div class="edit-delete-buttons">
+                <a href="{{ url_for('edit_profile') }}" class="edit"><i class="fa-solid fa-pencil"></i>  Edit Profile</a>
+            </div>
+            
+            <div class="profile-hero-content">
+                <h1>My Profile</h1>
+            </div>
+        </div>
+    </section>
+    <!-- END HERO SECTION -->
+
+    <!-- BLOG CONTENT -->
+    <section id="profile-content">
+        <div class="profile-picture-container"></div>
+        <div class="profile-details">
+            <h1>username</h1>
+            <p>Email</p>
+            <p>Number of posts: </p><br>
+            <hr>
+        </div>
+    </section>
+
+    <!-- END BLOG CONTENT SECTION -->
+
+    {% include 'constants/footer.html' %}
+
+
+{% endblock %}
+

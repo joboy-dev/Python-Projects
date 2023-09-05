@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% block page %}Blog Title{% endblock %}
+
+{% block css_links %}
+    <link rel="stylesheet" href="../static/styles/blog_content/blog.css" media="screen and (max-width: 2000px)">
+    <link rel="stylesheet" href="../static/styles/blog_content/blog.css" media="screen and (max-width: 768px)">
+    <link rel="stylesheet" href="../static/styles/blog_content/blog.css" media="screen and (max-width: 480px)">
+{% endblock %}
+
+{% block styles %}
+    <style>
+        #post-hero {
+            height: 70vh;
+            width: 100%;
+            background-image: url('../static/images/post-sample-image.jpg');
+            background-size: 100%;
+            background-repeat: no-repeat;
+            background-position: 0% 50%;
+            position: relative;
+        }
+    </style>
+{% endblock %}
+
+
+{% block content %}
+
+    <!-- HERO SECTION -->
+    <section id="post-hero">
+        <div class="content">
+            {% include 'constants/navbar.html' %}
+
+            <div class="edit-delete-buttons">
+                <a href="#" class="edit"><i class="fa-solid fa-pencil"></i>  Edit</a>
+                <a href="#" class="delete"><i class="fa-solid fa-trash"></i>  Delete</a>
+            </div>
+            
+            <div class="post-hero-content">
+                <h1>Blog Title</h1>
+                <h4>Posted on 3rd September, 2023</h4>
+            </div>
+        </div>
+    </section>
+    <!-- END HERO SECTION -->
+
+    <!-- BLOG CONTENT -->
+    <section id="post-content">
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nam quas placeat maiores dolor excepturi cumque eveniet eum ipsum unde ratione doloremque, repudiandae asperiores itaque minima aspernatur saepe at suscipit neque. Lorem ipsum dolor sit amet consectetur adipisicing elit. Aut non aperiam sed libero, nihil, pariatur minus quis suscipit atque fuga quae illum, consectetur voluptatum provident dignissimos cumque dolore. Tempora, illum.</p><br>
+        <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Incidunt, natus cumque eligendi, maxime ducimus exercitationem officiis alias quam nam deserunt pariatur totam at magni perspiciatis nisi nobis adipisci inventore. Assumenda?</p>
+    </section>
+
+    <!-- END BLOG CONTENT SECTION -->
+
+    {% include 'constants/footer.html' %}
+
+
+{% endblock %}
+
