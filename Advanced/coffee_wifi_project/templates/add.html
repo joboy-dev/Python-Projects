@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block title %}Add Cafe{% endblock %}
+
+{% block body %}
+    <div class="add-cafe-cover">
+        <h1>Add Cafe into the Database</h1>
+       
+        <form action="{{ url_for('add_cafe') }}" method="post">
+            <div class="form-field">
+                {{ form.cafe_name.label }}
+                {{ form.cafe_name }}
+            </div>
+
+            <div class="form-field">
+                {{ form.location.label }}
+                {{ form.location }}
+            </div>
+
+            <div class="form-field">
+                {{ form.open.label }}
+                {{ form.open }}
+            </div>
+
+            <div class="form-field">
+                {{ form.close.label }}
+                {{ form.close }}
+            </div>
+
+            <div class="form-field">
+                {{ form.coffee_quality.label }}
+                {{ form.coffee_quality }}
+            </div>
+
+            <div class="form-field">
+                {{ form.wifi_strength.label }}
+                {{ form.wifi_strength }}
+            </div>
+
+            <div class="form-field">
+                {{ form.power_strength.label }}
+                {{ form.power_strength }}
+            </div>
+
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+            <input type="submit" value="Add Cafe">
+
+        </form>
+    </div>
+{% endblock %}

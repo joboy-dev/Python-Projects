@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block title %}Cafes{% endblock %}
+
+{% block body %}
+    <div class="table-cover">
+        <h1>All Cafes</h1>
+        <div class="table-content">
+            <table cellspacing="30px">
+                <thead>
+                    <tr class="table-head">
+                        {% for cafe in cafe_data[0] %}
+                            <td>{{ cafe }}</td>
+                        {% endfor %}
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for cafe in cafe_data %}
+                        <tr class="table-data">
+                            <td>{{ cafe['Cafe Name'] }}</td>
+                            <td><a href="{{ cafe['Location'] }}">Google Maps</a></td>
+                            <td>{{ cafe['Open'] }}</td>
+                            <td>{{ cafe['Close'] }}</td>
+                            <td>{{ cafe['Coffee'] }}</td>
+                            <td>{{ cafe['Wifi'] }}</td>
+                            <td>{{ cafe['Power'] }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            <a href="{{ url_for('home') }}" class="link-button">Go home</a>
+        </div>
+    </div>
+{% endblock %}

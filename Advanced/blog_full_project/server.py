@@ -6,9 +6,10 @@ import os
 
 from email_password_regex_check import is_valid_email, is_valid_password
 from WTF_Forms.user_forms import SignUpForm, EditProfileForm, LoginForm
+from views import ListView, DetailView
 
 BASE_DIR = Path(__file__).resolve().parent.parent.parent.parent
-print(BASE_DIR)
+# print(BASE_DIR)
 
 load_dotenv(os.path.join(BASE_DIR, ".env"))
 
@@ -26,6 +27,8 @@ def home():
     
     return render_template('index.html', blogs=blogs)
 
+# class HomeView(ListView):
+    
 
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
@@ -91,7 +94,7 @@ def get_user_blogs():
 def get_blog(id):
     # Filter database for blogs based on id
     
-    return render_template('blog-content.html')
+    return render_template('blog-detail.html')
 
 @app.route('/profile')
 def get_user_details():

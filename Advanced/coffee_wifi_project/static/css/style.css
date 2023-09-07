@@ -1,0 +1,148 @@
+:root {
+    --background-color: rgb(71, 71, 71);
+    --text-color: rgb(236, 236, 236);
+    --button-color: rgb(238, 168, 39);
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+body {
+    background-color: var(--background-color);
+    margin: 0 40px;
+    color: var(--text-color);
+}
+
+.link-button{
+    color: var(--text-color);
+    text-decoration: none;
+    background-color: var(--button-color);
+    padding: 10px;
+    border-radius: 5px;
+    margin-top: 20px;
+    display: inline-block;
+    font-weight: normal;
+    transition: 0.3s ease-in;
+}
+
+.link-button:hover {
+    font-weight: bold;
+    box-shadow: 2px 2px 2px rgba(143, 143, 143, 0.7);
+}
+
+
+/* ----------------------------- HOME PAGE -------------------------------- */
+
+.cover {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+
+.home {
+    text-align: center;
+}
+
+.home h1 {
+    font-size: 100px;
+}
+
+.home p {
+    font-size: 30px;
+    font-weight: lighter;
+}
+
+
+/* ----------------------------- CAFES PAGE -------------------------------- */
+
+.table-cover {
+    height: 100vh;
+}
+
+/* .table-content table {
+    border-top: 1px solid var(--text-color);
+} */
+
+.table-cover h1 {
+    font-size: 70px;
+}
+
+.table-head{
+    font-weight: bold;
+}
+
+tr{
+    border-top: 2px solid var(--text-color);
+
+}
+
+.table-data a {
+    color: var(--button-color);
+    text-decoration: none;
+    transition: 0.3s ease-in;
+}
+
+.table-data a:hover {
+    font-weight: bold;
+}
+
+
+/* ----------------------------- ADD CAFE FORM -------------------------------- */
+
+.add-cafe-cover h1 {
+    font-size: 70px;
+}
+
+form .form-field {
+    margin: 20px 0;
+}
+
+form .form-field label {
+    font-size: 20px;
+    font-weight: bold;
+    padding: 5px 0;
+    display: block;
+}
+
+form .form-field input, select {
+    height: 50px;
+    width: 100%;
+    border-radius: 5px;
+    border: none;
+}
+
+form .form-field option:checked {
+    font-size: 20px;
+}
+
+form .form-field input[value] {
+    font-size: 15px;
+    padding: 0 20px;
+}
+
+form .form-field input:focus, select:focus {
+    box-shadow: 1px 1px 5px rgba(255, 255, 255, 0.5);
+    outline: none;
+}
+
+input[type='submit'] {
+    height: 50px;
+    width: 200px;
+    font-size: 20px;
+    font-weight: normal;
+    color: var(--text-color);
+    background-color: var(--button-color);
+    border: none;
+    border-radius: 5px;
+    transition: 0.3s ease-in;
+}
+
+input[type='submit']:hover{
+    font-weight: bold;
+    box-shadow: 2px 2px 2px rgba(143, 143, 143, 0.7);
+}
