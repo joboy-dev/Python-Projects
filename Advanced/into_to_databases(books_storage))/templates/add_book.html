@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form action="{{ url_for('addBook') }}" method="post">
+        <div>
+            {{ form.book_title.label }} <br>
+            {{ form.book_title }} <br>
+        </div>
+
+        <div>
+            {{ form.author.label }} <br>
+            {{ form.author }} <br><br>
+        </div>
+
+        <input type="hidden" name="csrf_token", value="{{ csrf_token() }}">
+
+        <input type="submit" value="Add Book">
+    </form>
+</body>
+</html>
