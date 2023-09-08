@@ -7,11 +7,15 @@
 </head>
 <body>
     <h1>Books Library</h1>
-    <ul>
-        <li>Book 1</li>
-        <li>Book 2</li>
-        <li>Book 3</li>
-    </ul>
+    {% if not books %}
+        <p>No books available</p>
+    {% else %}
+        <ul>
+            {% for book in books %}
+                <li><a href="{{ url_for('delete', id=book.id) }}">Delete</a>  {{ book }}  <a href="{{ url_for('editRating', id=book.id) }}">Edit Rating</a></li>
+            {% endfor %}
+        </ul>
+    {% endif %}
     <a href="{{ url_for('addBook') }}">Add Book</a>
 </body>
 </html>

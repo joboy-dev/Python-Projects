@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Add Book</title>
 </head>
 <body>
     <form action="{{ url_for('addBook') }}" method="post">
@@ -14,7 +14,12 @@
 
         <div>
             {{ form.author.label }} <br>
-            {{ form.author }} <br><br>
+            {{ form.author }} <br>
+        </div>
+
+        <div>
+            {{ form.rating.label }} <br>
+            {{ form.rating }} <br><br>
         </div>
 
         <input type="hidden" name="csrf_token", value="{{ csrf_token() }}">

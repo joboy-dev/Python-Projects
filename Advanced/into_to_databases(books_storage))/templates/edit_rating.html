@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Rating</title>
+</head>
+<body>
+    <form action="{{ url_for('editRating', id=book.id) }}" method="post">
+
+        <div>
+            {{ form.rating.label }} <br>
+            {{ form.rating(value=book.rating) }} <br><br>
+        </div>
+
+        <input type="hidden" name="csrf_token", value="{{ csrf_token() }}">
+
+        <input type="submit" value="Edit">
+    </form>
+</body>
+</html>
