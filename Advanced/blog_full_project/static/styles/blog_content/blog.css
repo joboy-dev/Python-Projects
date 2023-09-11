@@ -44,16 +44,17 @@
 }
 
 .post-hero-content h1 {
-    font-size: 100px;
+    font-size: 60px;
 }
 
-.post-hero-content h1 span {
-    text-decoration: underline;
+.post-hero-content h2 {
+    font-size: 40px;
+    font-weight: lighter;
 }
 
 .post-hero-content h4 {
-    font-size: 40px;
-    font-weight: normal;
+    font-size: 30px;
+    font-weight: lighter;
 }
 
 #post-content{
@@ -87,3 +88,17 @@
 .edit-delete-buttons a:hover {
     scale: 1.05;
 }
+
+
+/* -------------- COMMENTS SECTION ------------------ */
+
+#comments-section {
+    height: 50vh;
+    overflow: hidden;
+}
+
+#comments-section p {
+    margin: 2% 10%;
+    animation: moveInFromRight 0.5s ease-in;
+}
+

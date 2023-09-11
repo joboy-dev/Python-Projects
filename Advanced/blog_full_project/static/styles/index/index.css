@@ -89,17 +89,29 @@
     text-decoration: none;
     color: black;
     font-weight: bold;
-    font-size: 60px;
+    font-size: 40px;
 }
 
 .blog-title:hover{
     color: var(--red-color);
 }
 
-.blog-content{
+.blog-subtitle{
     color: black;
     font-weight: lighter;
     font-size: 30px;
+}
+
+.no-blog {
+    text-align: center;
+    height: 300px;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.no-blog a {
+    text-decoration: none;
+    color: var(--red-color);
 }
 
 .attribution{
@@ -137,4 +149,28 @@
 
 .blog-visible {
     display: block;
+}
+
+.edit-delete-buttons {
+    display: flex;
+    align-items: center;
+    justify-content: end;
+    gap: 40px;
+    animation: moveInFromRight 1s ease-in;
+    margin-bottom: 20px;
+}
+
+.edit-delete-buttons a {
+    text-decoration: none;
+    color: var(--red-color);
+    font-size: 15px;
+    background-color: transparent;
+    border: none;
+    transition: 0.3s ease-in;
+    text-transform: uppercase;
+    font-weight: bold;
+}
+
+.edit-delete-buttons a:hover {
+    scale: 1.05;
 }

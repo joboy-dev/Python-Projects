@@ -1,19 +1,19 @@
 <!-- NAVBAR -->
 <nav id="navbar">
     <div class="logo">
-        <a href="{{ url_for('home') }}"><span>Blog</span>Now!</a>
+        <a href="{{ url_for('home') }}"><span>Blog</span>Globe</a>
     </div>
 
     <div class="nav-content">
         <ul class="nav-links">
             <li><a href="{{ url_for('home') }}">Home</a></li>
-            <li><a href="{{ url_for('get_user_blogs') }}">My Blogs</a></li>
+            <li><a href="{{ url_for('getUserBlogs') }}">My Blogs</a></li>
             <!-- For authenicated users -->
-            <li><i class="fa-solid fa-plus fa-beat"></i>  <a href="#">Add Blog</a></li>
+            <li><i class="fa-solid fa-plus fa-beat"></i>  <a href="{{ url_for('addBlog') }}">Add Blog</a></li>
             
             <li><a href="{{ url_for('signup') }}">Sign Up</a></li>
             <li><a href="{{ url_for('login') }}">Login</a></li>
-            <li><a href="{{ url_for('get_user_details') }}">My Profile</a></li>
+            <li><a href="{{ url_for('getUserDetails') }}">My Profile</a></li>
 
             <li><a href="{{ url_for('logout') }}">Logout</a></li>
             

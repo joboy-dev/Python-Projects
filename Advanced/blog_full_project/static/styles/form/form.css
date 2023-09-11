@@ -57,6 +57,12 @@
     font-size: 20px;
 }
 
+.form .form-field label {
+    display: block;
+    font-size: 20px;
+    margin: 5px;
+}
+
 .form input{
     border: 1px solid var(--red-color);
     border-radius: 5px;
@@ -148,11 +154,11 @@ p a:hover {
 
 /* Message */
 .message {
-    background-color: rgba(255, 0, 0, 0.7);
+    /* background-color: rgba(255, 0, 0, 0.7); */
     font-size: 15px;
     font-weight: bold;
     margin: 0 10%;
-    color: white;
+    color: rgba(255, 0, 0, 0.7);
     height: 40px;
     display: flex;
     align-items: center;

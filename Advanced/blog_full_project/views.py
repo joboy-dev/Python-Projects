@@ -12,9 +12,9 @@ class ListView(View):
 
 
 class DetailView(View):
-    def __init__(self, model):
+    def __init__(self, model, template):
         self.model = model
-        self.template = f"{model.__name__.lower()}-detail.html"
+        self.template = template
 
     def dispatch_request(self, id):
         item = self.model.query.get_or_404(id)

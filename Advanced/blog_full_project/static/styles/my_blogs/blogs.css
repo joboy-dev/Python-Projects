@@ -48,36 +48,8 @@
     font-size: 100px;
 }
 
-.blog-hero-content h1 span {
-    text-decoration: underline;
-}
-
 .blog-hero-content h4 {
     font-size: 40px;
     font-weight: normal;
-}
-
-.edit-delete-buttons {
-    display: flex;
-    align-items: center;
-    justify-content: end;
-    gap: 40px;
-    animation: moveInFromRight 1s ease-in;
-    margin-bottom: 20px;
-}
-
-.edit-delete-buttons a {
-    text-decoration: none;
-    color: var(--red-color);
-    font-size: 15px;
-    background-color: transparent;
-    border: none;
-    transition: 0.3s ease-in;
-    text-transform: uppercase;
-    font-weight: bold;
-}
-
-.edit-delete-buttons a:hover {
-    scale: 1.05;
 }
 

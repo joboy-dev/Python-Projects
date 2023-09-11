@@ -16,7 +16,7 @@
             {% include 'constants/navbar.html' %}
 
             <div class="hero-content">
-                <h1><span>Blog</span>Now!</h1>
+                <h1><span>Blog</span>Globe</h1>
                 <h4>Where blogging never stops...</h4>
         
                 <a href="{{url_for('login')}}" class="cta-button">Get Started</a>
@@ -27,44 +27,29 @@
 
     <!-- BLOG LIST SECTION -->
     <section id="blog-list">
-        <div class="blog">
-            <a class="blog-title" href="{{ url_for('get_blog', id=1) }}">Blog Title</a>
-            <p class="blog-content">This is a new blog by Joboy.</p>
-            <p class="attribution">Posted by <b><em>Joseph</em></b> on <em>2, September 2023, 14:25</em></p>
-            <hr color="red">
-        </div>
+        {% if blogs %}
+            {% set blogs_list =  blogs|list %}
+            
+            {% for blog in blogs_list|reverse %}
+                <div class="blog">
+                    <a class="blog-title" href="{{ url_for('getBlog', id=blog.id) }}">{{ blog.title }}</a>
+                    <p class="blog-subtitle">{{ blog.subtitle }}</p>
+                    <p class="attribution">Posted by <b><em>you</em></b> on <em>{{ blog.date }}</em></p>
 
-        <div class="blog">
-            <a class="blog-title" href="{{ url_for('get_blog', id=1) }}">Blog Title</a>
-            <p class="blog-content">This is a new blog by Joboy.</p>
-            <p class="attribution">Posted by <b><em>Joseph</em></b> on <em>2, September 2023, 14:25</em></p>
-            <hr color="red">
-        </div>
+                    <hr color="red">
+                </div>
+            {% endfor %}
 
-        <div class="blog">
-            <a class="blog-title" href="{{ url_for('get_blog', id=1) }}">Blog Title</a>
-            <p class="blog-content">This is a new blog by Joboy.</p>
-            <p class="attribution">Posted by <b><em>Joseph</em></b> on <em>2, September 2023, 14:25</em></p>
-            <hr color="red">
-        </div>
-
-        <div class="blog">
-            <a class="blog-title" href="{{ url_for('get_blog', id=1) }}">Blog Title</a>
-            <p class="blog-content">This is a new blog by Joboy.</p>
-            <p class="attribution">Posted by <b><em>Joseph</em></b> on <em>2, September 2023, 14:25</em></p>
-            <hr color="red">
-        </div>
-
-        <div class="blog">
-            <a class="blog-title" href="{{ url_for('get_blog', id=1) }}">Blog Title</a>
-            <p class="blog-content">This is a new blog by Joboy.</p>
-            <p class="attribution">Posted by <b><em>Joseph</em></b> on <em>2, September 2023, 14:25</em></p>
-            <hr color="red">
-        </div>
-
-        <div class="more-button">
-            <p>Older Posts  <i class="fa-solid fa-arrow-right"></i></p>
-        </div>
+                {% if blogs_list|length > 5 %}
+                    <div class="more-button">
+                        <p>Older Posts  <i class="fa-solid fa-arrow-right"></i></p>
+                    </div>
+                {% endif %}
+        {% else %}
+            <div class="no-blog">
+                <p>There are no blog posts yet. Click <a href="{{ url_for('addBlog') }}">here</a> to add yours.</p>
+            </div>
+        {% endif %}
     </section>
 
     <!-- END BLOG LIST SECTION -->
