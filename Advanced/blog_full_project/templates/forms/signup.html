@@ -6,17 +6,42 @@
     <link rel="stylesheet" href="../../static/styles/form/form.css" media="screen and (max-width: 2000px)">
 {% endblock %}
 
+{% block styles %}
+    <style>
+        #form-hero {
+            height: 70vh;
+            width: 100%;
+            background-image: url('../../static/images/edit-bg.jpg');
+            background-size: 100%;
+            background-repeat: no-repeat;
+            background-position: 0% 50%;
+            position: relative;
+        }
+    </style>
+{% endblock %}
+
 {% block content %}
+    <!-- HERO SECTION -->
+    <section id="form-hero">
+        <div class="content">
+            {% include 'constants/navbar.html' %}
+
+            <div class="form-hero-content">
+                <h1>Sign Up</h1>
+            </div>
+        </div>
+    </section>
+    <!-- END HERO SECTION -->
 
     <!-- SIGNUP SECTION -->
     <section id="form-container">
         <form action="{{ url_for('signup') }}" method="post" class="form">
-            <div class="heading">
-                <h1>Sign up</h1>
-                <hr>
-            </div>
-
             {% include 'constants/flash_messages.html' %}
+
+            <div class="form-field">
+                {{ form.full_name.label }} 
+                {{ form.full_name }}
+            </div>
 
             <div class="form-field">
                 {{ form.username.label }} 
@@ -41,34 +66,13 @@
             <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
             
             {{ form.submit }}
-
-
-            <!-- <div class="form-field">
-                <label for="username">Username</label>
-                <input type="text" id="username" name="username" placeholder="johndoe123" required>
-            </div>
-
-            <div class="form-field">
-                <label for="username">Email</label>
-                <input type="email" id="email" name="email" placeholder="johndoe@gmail.com" required>
-            </div>
-
-            <div class="form-field">
-                <label for="username">Password</label>
-                <input type="password" id="password" name="password" placeholder="Enter 8 or more characters" required>
-            </div>
-
-            <div class="form-field">
-                <label for="username">Confirm Password</label>
-                <input type="password" id="confirm-password" name="confirm-password" placeholder="Enter 8 or more characters" required>
-            </div> -->
-
-            <!-- <button class="submit-button">Sign up</button> -->
-
+            
             <p>Already have an account? <a href="{{url_for('login')}}">Log in.</a></p><br>
-            <p class="go-home"><a href="{{ url_for('home') }}">Go back home</a></p>
 
         </form>
     </section>
     <!-- END SIGNUP SECTION -->
+    
+    {% include 'constants/footer.html' %}
+
 {% endblock %}

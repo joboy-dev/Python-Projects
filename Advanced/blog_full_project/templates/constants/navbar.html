@@ -7,17 +7,17 @@
     <div class="nav-content">
         <ul class="nav-links">
             <li><a href="{{ url_for('home') }}">Home</a></li>
-            <li><a href="{{ url_for('getUserBlogs') }}">My Blogs</a></li>
-            <!-- For authenicated users -->
-            <li><i class="fa-solid fa-plus fa-beat"></i>  <a href="{{ url_for('addBlog') }}">Add Blog</a></li>
             
-            <li><a href="{{ url_for('signup') }}">Sign Up</a></li>
-            <li><a href="{{ url_for('login') }}">Login</a></li>
-            <li><a href="{{ url_for('getUserDetails') }}">My Profile</a></li>
-
-            <li><a href="{{ url_for('logout') }}">Logout</a></li>
-            
-            <p>Logged in as <b>user</b></p>
+            {% if user.is_authenticated %}
+                <li><a href="{{ url_for('getUserBlogs') }}">My Blogs</a></li>
+                <li><i class="fa-solid fa-plus fa-beat"></i>  <a href="{{ url_for('addBlog') }}">Add Blog</a></li>
+                <li><a href="{{ url_for('getUserDetails') }}">My Profile</a></li>
+                <p>Logged in as <b>{{ user.username }}</b></p>
+                <li><a href="{{ url_for('logout') }}">Logout</a></li>
+            {% else %}
+                <li><a href="{{ url_for('signup') }}">Sign Up</a></li>
+                <li><a href="{{ url_for('login') }}">Login</a></li>
+            {% endif %}
         </ul>
 
         <!-- Hamburger -->

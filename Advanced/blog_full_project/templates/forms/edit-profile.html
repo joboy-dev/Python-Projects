@@ -8,51 +8,60 @@
 
 {% block styles %}
     <style>
-        #form-container{
-            background-color: var(--white-color);
-            display: flex;
-            align-items: center;
-            justify-content: center;
+        #form-hero {
+            height: 70vh;
             width: 100%;
-            height: 100vh;
             background-image: url('../../static/images/edit-bg.jpg');
             background-size: 100%;
             background-repeat: no-repeat;
             background-position: 0% 50%;
+            position: relative;
         }
     </style>
 {% endblock %}
 
 {% block content %}
-<!-- EDIT PROFILE SECTION -->
-    <section id="form-container">
+    <!-- HERO SECTION -->
+    <section id="form-hero">
+        <div class="content">
+            {% include 'constants/navbar.html' %}
 
-        <form action="{{ url_for('edit_profile') }}" method="post" class="form" style="height: 55%;">
-            
-            <div class="heading">
+            <div class="form-hero-content">
                 <h1>Edit Profile</h1>
-                <hr>
+            </div>
+        </div>
+    </section>
+    <!-- END HERO SECTION -->
+
+    <!-- SIGNUP SECTION -->
+    <section id="form-container">
+        <form action="{{ url_for('editProfile') }}" method="post" class="form">
+            {% include 'constants/flash_messages.html' %}
+            
+            <div class="form-field">
+                {{ form.full_name.label }} 
+                {{ form.full_name }}
             </div>
 
-            {% include 'constants/flash_messages.html' %}
-
             <div class="form-field">
-                {{ form.username.label }}
+                {{ form.username.label }} 
                 {{ form.username }}
             </div>
 
             <div class="form-field">
-                {{ form.email.label }}
+                {{ form.email.label }} 
                 {{ form.email }}
             </div>
 
+
             <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-
+            
             {{ form.submit }}
-
-            <p class="go-home"><a href="{{ url_for('get_user_details') }}">Go back</a></p>
 
         </form>
     </section>
-    <!-- END EDIT PROFILE SECTION -->
+    <!-- END SIGNUP SECTION -->
+    
+    {% include 'constants/footer.html' %}
+
 {% endblock %}

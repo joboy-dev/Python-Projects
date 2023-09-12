@@ -18,8 +18,10 @@
             <div class="hero-content">
                 <h1><span>Blog</span>Globe</h1>
                 <h4>Where blogging never stops...</h4>
-        
-                <a href="{{url_for('login')}}" class="cta-button">Get Started</a>
+                
+                {% if not user.is_authenticated %}
+                    <a href="{{url_for('login')}}" class="cta-button">Get Started</a>
+                {% endif %}
             </div>
         </div>
     </section>
@@ -34,7 +36,7 @@
                 <div class="blog">
                     <a class="blog-title" href="{{ url_for('getBlog', id=blog.id) }}">{{ blog.title }}</a>
                     <p class="blog-subtitle">{{ blog.subtitle }}</p>
-                    <p class="attribution">Posted by <b><em>you</em></b> on <em>{{ blog.date }}</em></p>
+                    <p class="attribution">Posted by <b><em>{{ blog.author_id.username }}</em></b> on <em>{{ blog.date }}</em></p>
 
                     <hr color="red">
                 </div>
