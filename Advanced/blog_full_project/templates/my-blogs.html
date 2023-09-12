@@ -35,7 +35,7 @@
                     <div class="blog">
                         <a class="blog-title" href="{{ url_for('getBlog', id=blog.id) }}">{{ blog.title }}</a>
                         <p class="blog-subtitle">{{ blog.subtitle }}</p>
-                        <p class="attribution">Posted by <b><em>you</em></b> on <em>{{ blog.date }}</em></p>
+                        <p class="attribution">Posted by <b><em>you</em></b> on <em>{{ blog.created }}</em></p>
 
                         <div class="edit-delete-buttons">
                             <a href="{{ url_for('editBlog', id=blog.id) }}" class="edit"><i class="fa-solid fa-pencil"></i>  Edit</a>

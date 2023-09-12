@@ -1,63 +1,5 @@
-from flask import Flask, render_template, request, redirect, url_for, flash
-from flask_wtf.csrf import CSRFProtect
-from flask.views import View
-from flask_ckeditor import CKEditor
-from flask_login import LoginManager, login_required, login_url, logout_user, login_user, current_user
-from werkzeug.security import generate_password_hash, check_password_hash
-
-from dotenv import load_dotenv
-from pathlib import Path
-import os
-from datetime import datetime
-
-from email_password_regex_check import is_valid_password
-from WTF_Forms.user_forms import SignUpForm, EditProfileForm, LoginForm
-from WTF_Forms.blog_forms import AddBlogForm, EditBlogFrom, AddCommentForm
-import models
-from models import BlogPost, User, Comment
-
-BASE_DIR = Path(__file__).resolve().parent.parent.parent.parent
-load_dotenv(os.path.join(BASE_DIR, ".env"))
-
-app = Flask(__name__)
-app.secret_key = os.getenv('FLASK_SECRET_KEY')
-
-# setting up csrf
-csrf = CSRFProtect(app)
-
-# setting up ckeditor
-app.config['CKEDITOR_PKG_TYPE'] = 'full'
-ckeditor = CKEditor(app)
-
-# setting up flask login manager
-login_manager = LoginManager()
-login_manager.init_app(app)
-
-# ----------------------- DATABASE CONFIG ------------------------- #
-
-database = models.db
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///blog_app.db'
-database.init_app(app)
-
-# crate all tables
-with app.app_context():
-    database.create_all()
-
-
-session = database.session
-
-# ------------------------------ DATE -------------------------------- #
-
-def get_date():
-    date_posted = datetime.now().strftime('%d %B, %Y | %H:%M')
-    return date_posted
-
-
-# --------------------- USER CONFIG -------------------------- #
-
-@login_manager.user_loader
-def load_user(user_id):
-    return session.query(User).get(str(user_id))
+from flask import typing as ft
+from __init__ import *
 
 # ----------------------- USER VIEWS ------------------------- #
 
@@ -81,12 +23,13 @@ class SignUpView(View):
         message = None
         form = SignUpForm(request.form)
         
-        if request.method == 'POST' and form.validate():
+        if request.method == 'POST' and form.validate_on_submit():
             full_name = form.full_name.data
             username = form.username.data
             email = form.email.data
             password = form.password.data
             password2 = form.password2.data
+            profile_picture = 'https://th.bing.com/th?id=OIP.2s7VxdmHEoDKji3gO_i-5QHaHa&w=250&h=250&c=8&rs=1&qlt=90&o=6&pid=3.1&rm=2'
             
             if password != password2:
                 message = 'Your passwords do not match.'
@@ -112,12 +55,15 @@ class SignUpView(View):
                         username=username,
                         email=email,
                         password=hashed_password,
+                        profile_picture=profile_picture
                     )
                     session.add(user)
                     session.commit()
                     
+                    login_user(user)
+                    
                     flash(message='You have successfully signed up')
-                    return redirect(url_for('login'))
+                    return redirect(url_for('home'))
 
         return render_template('forms/signup.html', form=form, message=message, user=current_user)
     
@@ -134,7 +80,7 @@ class LoginView(View):
         
         form = LoginForm(request.form)
         
-        if request.method == 'POST' and form.validate():
+        if request.method == 'POST' and form.validate_on_submit():
             username = form.username.data
             password = form.password.data
             
@@ -174,7 +120,8 @@ class GetUserDetailsView(View):
     decorators = [login_required]
     
     def dispatch_request(self):
-        return render_template('profile.html', user=current_user)
+        change_picture_form = ChangeProfilePictureForm(request.files)
+        return render_template('profile.html', user=current_user, form=change_picture_form)
 
 app.add_url_rule('/profile', view_func=GetUserDetailsView.as_view(name='getUserDetails'))
 
@@ -186,17 +133,66 @@ class EditProfileView(View):
     decorators = [login_required]
     
     def dispatch_request(self):
-        form = EditProfileForm(request.form)
+        message = None
         
-        if request.method == 'POST' and form.validate():
-            # Check if username/email entered already belongs to another user
-            
-            flash(message='Changes Saved')
-            return redirect(url_for('get_user_details'))
+        user = database.get_or_404(User, current_user.id)
+        form = EditProfileForm(obj=user)
         
-        return render_template('forms/edit-profile.html', form=form, user=current_user)
+        username_data = session.query(User).filter_by(username=form.username.data).first()
+        email_data = session.query(User).filter_by(email=form.email.data).first()
+        
+        if request.method == 'POST' and form.validate_on_submit():
+            # # check if username and email exists
+            # if username_data:
+            #     message = 'This username is taken.'
+            # elif email_data:
+            #     message = 'Thus email is in use.'
+            # else:
+            form.populate_obj(user)
+            session.commit()
+            return redirect(url_for('getUserDetails'))
+    
+        return render_template('forms/edit-profile.html', form=form, user=current_user, message=message)
     
 app.add_url_rule('/profile/edit', view_func=EditProfileView.as_view(name='editProfile'))
+
+
+class ChangePasswordView(View):
+    '''View to change user password'''
+    
+    methods = ['GET', 'POST']
+    decorators = [login_required]
+    
+    def dispatch_request(self):
+        form = ChangePasswordForm(request.form)
+        return render_template('forms/change-password.html', form=form, user=current_user)
+        
+    
+app.add_url_rule('/profile/change-password', view_func=ChangePasswordView.as_view(name='changePassword'))
+
+
+class ChangeProfilePictureView(View):
+    '''View to change user profile picture'''
+    
+    methods = ['GET', 'POST']
+    decorators = [login_required]
+    
+    def dispatch_request(self):
+        form = ChangeProfilePictureForm(request.files)
+        
+        # if form.validate_on_submit() and 'picture' in request.files:
+        #     return redirect(url_for('getUserDetails'))
+        
+        return redirect(url_for('getUserDetails'))
+        
+        # return render_template('profile.html', form=form, user=current_user)
+    
+app.add_url_rule('/profile/change-profile-picture', view_func=ChangeProfilePictureView.as_view(name='changeProfilePicture'))
+
+# def upload_file():
+#     if request.method == 'POST':
+#         f = request.files['the_file']
+#         f.save('/var/www/uploads/' + secure_filename(f.filename))
 
 
 # ----------------------- BLOG VIEWS ------------------------- #
@@ -207,9 +203,9 @@ class GetUserBlogsView(View):
     decorators = [login_required]
     
     def dispatch_request(self):
-        # id is needed
+        print(current_user.id)
         # Check database for blogs for the current logged in user
-        user_blogs = session.query(BlogPost).all()
+        user_blogs = session.query(BlogPost).filter_by(author_id=current_user.id).all()
         
         return render_template('my-blogs.html', user_blogs=user_blogs, user=current_user)
 
@@ -236,7 +232,8 @@ class AddBlogView(View):
                 subtitle=form.subtitle.data,
                 image_url='https://img.freepik.com/free-photo/toy-bricks-table-with-word-blog_144627-47465.jpg?size=626&ext=jpg&uid=R65046554&ga=GA1.2.163047648.1692182630&semt=sph' if len(form.image_url.data) == 0 else form.image_url.data,
                 blog_content=form.blog_content.data,
-                date=date,
+                created=date,
+                updated=date,
                 author_id=current_user.id
             )
             
@@ -259,17 +256,24 @@ class EditBlogView(View):
     decorators = [login_required]
     
     def dispatch_request(self, id):
+        message = None
         blog = database.get_or_404(BlogPost, id)
         
         form = EditBlogFrom(obj=blog)
         
         if request.method == 'POST' and form.validate_on_submit():
+            date = get_date()
             form.populate_obj(blog)
             
-            session.commit()
-            return redirect(url_for('getUserBlogs'))
+            if blog.author_id == current_user.id:
+                blog.updated = date
+                session.commit()
+                return redirect(url_for('getBlog', id=blog.id))
+            else:
+                message = 'You cannot edit another user\'s post'
+                return abort(code=401)
             
-        return render_template('forms/edit-blog.html', form=form, blog=blog, user=current_user)
+        return render_template('forms/edit-blog.html', form=form, blog=blog, user=current_user, message=message)
     
 app.add_url_rule('/blog/<int:id>/edit', view_func=EditBlogView.as_view(name='editBlog'))
 
@@ -277,7 +281,7 @@ app.add_url_rule('/blog/<int:id>/edit', view_func=EditBlogView.as_view(name='edi
 class GetBlogView(View):
     '''View to get individual blogs'''
     
-    decorators = [login_required]
+    # decorators = [login_required]
     
     def dispatch_request(self, id):
         form = AddCommentForm(request.form)
@@ -296,21 +300,49 @@ class DeleteBlogView(View):
     decorators = [login_required]
     
     def dispatch_request(self, id):
+        message = None
         # Filter database for blogs based on id
         blog =  database.get_or_404(BlogPost, id)
         
-        session.delete(blog)
-        session.commit()
-        
-        return redirect(url_for('getUserBlogs'))
+        if blog.author_id == current_user.id: 
+            session.delete(blog)
+            session.commit()
+            return redirect(url_for('getUserBlogs'))
+        else:
+            message = 'You cannot delete another user\'s blog.'
+            return abort(code=401)
+            
 
 app.add_url_rule('/blog/<int:id>/delete', view_func=DeleteBlogView.as_view(name='deleteBlog'))
 
 
-# def upload_file():
-#     if request.method == 'POST':
-#         f = request.files['the_file']
-#         f.save('/var/www/uploads/' + secure_filename(f.filename))
+class AddBlogCommentView(View):
+    '''View to add comments to blogs'''
+    
+    def dispatch_request(self, id):
+        form = AddCommentForm(request.form)
+        blog = database.get_or_404(BlogPost, id)
+        
+        if request.method == 'POST' and form.validate_on_submit():
+            date = get_date()
+            
+            # create comment object to add to database
+            comment = Comment(
+                comment=form.comment.data,
+                created=date,
+                blog_id=blog.id,
+                author_is=current_user.id
+            )
+            
+            session.add(comment)
+            session.commit()
+            
+            return redirect(url_for('getBlog', id=blog.id))
+        
+app.add_url_rule('/blog/<int:id>/addComment', view_func=AddBlogCommentView.as_view(name='addComment'))
 
+
+
+# Run app
 if __name__ == '__main__':
     app.run(debug=True)

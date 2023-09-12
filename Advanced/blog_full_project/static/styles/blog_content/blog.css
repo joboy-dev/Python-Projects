@@ -65,6 +65,36 @@
     animation: moveInFromUp 1s ease-in;
 }
 
+/* POST AUTHOR DETAILS */
+
+.author {
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    height: 10vh;
+    gap: 40px;
+    margin-bottom: 50px;
+}
+
+.author .profile-picture {
+    height: 100px;
+    width: 100px;
+    border-radius: 5%;
+    border: 2px solid var(--red-color);
+}
+
+.author .profile-picture img {
+    height: 100%;
+    width: 100%;
+    object-fit: fill;
+    overflow: hidden;
+}
+
+.author .author-details span {
+    color: var(--red-color);
+    font-weight: normal;
+}
+
 .edit-delete-buttons {
     display: flex;
     align-items: center;
@@ -93,12 +123,46 @@
 /* -------------- COMMENTS SECTION ------------------ */
 
 #comments-section {
-    height: 50vh;
-    overflow: hidden;
+    height: 40vh;
+    overflow-x: hidden;
+    overflow-y: auto;
+    margin: 2% 10%;
 }
 
 #comments-section p {
     margin: 2% 10%;
-    animation: moveInFromRight 0.5s ease-in;
+    font-size: 30px;
+    font-weight: bold;
+    animation: moveInFromLeft 1s ease-in;
+}
+
+/* COMMENT DETAILS */
+
+.comment {
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    height: 10vh;
+    gap: 40px;
+    margin-bottom: 50px;
+}
+
+.comment .profile-picture {
+    height: 100px;
+    width: 100px;
+    border-radius: 5%;
+    border: 2px solid var(--red-color);
+}
+
+.comment .profile-picture img {
+    height: 100%;
+    width: 100%;
+    object-fit: fill;
+    overflow: hidden;
+}
+
+.comment .comment-details span {
+    color: var(--red-color);
+    font-weight: normal;
 }
 

@@ -28,6 +28,7 @@
     <!-- BLOG FORM SECTION -->
     <section id="form-container">
         <form action="{{ url_for('editBlog', id=blog.id) }}" method="post" class="form">
+            {% include 'constants/flash_messages.html' %}
 
             <div class="form-field">
                 {{ form.title.label }}
@@ -55,7 +56,6 @@
             <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
             
             {{ form.submit }}
-            {% include 'constants/flash_messages.html' %}
             
         </form>
     </section>

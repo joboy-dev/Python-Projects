@@ -36,7 +36,7 @@
                 <div class="blog">
                     <a class="blog-title" href="{{ url_for('getBlog', id=blog.id) }}">{{ blog.title }}</a>
                     <p class="blog-subtitle">{{ blog.subtitle }}</p>
-                    <p class="attribution">Posted by <b><em>{{ blog.author_id.username }}</em></b> on <em>{{ blog.date }}</em></p>
+                    <p class="attribution">Posted by <b><em>{{ blog.post_author.full_name }}</em></b> on <em>{{ blog.created }}</em></p>
 
                     <hr color="red">
                 </div>
@@ -57,8 +57,6 @@
     <!-- END BLOG LIST SECTION -->
 
     {% include 'constants/footer.html' %}
-
-    {% block script %} <script src="../static/script/animations.js"></script> {% endblock %}
 
 {% endblock %}
 

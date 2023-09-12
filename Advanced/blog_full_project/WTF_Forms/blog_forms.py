@@ -13,8 +13,8 @@ class AddBlogForm(FlaskForm):
     
     subtitle = fields.StringField(
         label='Blog Post Subtitle *',
-        validators=[validators.Length(min=3, max=40, message=f'This field allows minimum of 3 characters and maximum of 40 characters')],
-        render_kw={'placeholder': 'A short description (not more than 40 chracters)', 'required': True}
+        validators=[validators.Length(min=3, max=200, message=f'This field allows minimum of 3 characters and maximum of 200 characters')],
+        render_kw={'placeholder': 'A short description (not more than 200 chracters)', 'required': True}
     )
     
     image_url = fields.URLField(
@@ -43,8 +43,8 @@ class EditBlogFrom(FlaskForm):
     
     subtitle = fields.StringField(
         label='Blog Post Subtitle *',
-        validators=[validators.Length(min=3, max=40, message=f'This field allows minimum of 3 characters and maximum of 40 characters')],
-        render_kw={'placeholder': 'A short description (not more than 40 chracters)', 'required': True}
+        validators=[validators.Length(min=3, max=200, message=f'This field allows minimum of 3 characters and maximum of 200 characters')],
+        render_kw={'placeholder': 'A short description (not more than 200 chracters)', 'required': True}
     )
     
     image_url = fields.URLField(
@@ -62,7 +62,7 @@ class EditBlogFrom(FlaskForm):
     )
     
 
-class AddCommentForm(Form):
+class AddCommentForm(FlaskForm):
     '''Form to handle editing blog posts'''
     
     comment = fields.StringField(

@@ -77,6 +77,8 @@
 /* ----------------------- BLOG LIST ----------------------*/
 #blog-list {
     margin: 40px 20%;
+    height: 75vh;
+    overflow-y: auto;
 }
 
 #blog-list .blog{

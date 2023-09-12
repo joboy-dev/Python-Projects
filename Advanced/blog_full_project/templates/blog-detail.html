@@ -32,16 +32,18 @@
     <section id="post-hero">
         <div class="content">
             {% include 'constants/navbar.html' %}
-
-            <div class="edit-delete-buttons">
-                <a href="{{ url_for('editBlog', id=blog.id )}}" class="edit"><i class="fa-solid fa-pencil"></i>  Edit</a>
-                <a href="{{ url_for('deleteBlog', id=blog.id )}}" class="delete"><i class="fa-solid fa-trash"></i>  Delete</a>
-            </div>
+            
+            {% if blog.author_id == user.id %}
+                <div class="edit-delete-buttons">
+                    <a href="{{ url_for('editBlog', id=blog.id )}}" class="edit"><i class="fa-solid fa-pencil"></i>  Edit</a>
+                    <a href="{{ url_for('deleteBlog', id=blog.id )}}" class="delete"><i class="fa-solid fa-trash"></i>  Delete</a>
+                </div>
+            {% endif %}
             
             <div class="post-hero-content">
                 <h1>{{ blog.title }}</h1>
                 <h2>{{ blog.subtitle }}</h2>
-                <h4>Posted on {{ blog.date }}</h4>
+                <h4>Posted on {{ blog.created }}</h4>
             </div>
         </div>
     </section>
@@ -49,30 +51,56 @@
 
     <!-- BLOG CONTENT -->
     <section id="post-content">
+        <div class="author">
+            <div class="profile-picture">
+                <img src="{{ blog.post_author.profile_picture }}" alt="{{ blog.post_author.full_name }}'s' Profile Picture">
+            </div>
+            <div class="author-details">
+                <p><b>Author: </b><span>{{ blog.post_author.full_name }}</span></p>
+                <p><b>Last updated: </b><span>{{ blog.updated }}</span></p>
+            </div>
+        </div>
         {{ blog.blog_content|safe }}
     </section>
-
-    <hr><br>
-
     <!-- END BLOG CONTENT SECTION -->
 
+    <hr>
+    
     <!-- COMMENTS SECTION -->
     <section id="comments-section">
-        <form action="#" class="form">
-            <div class="form-field">
-                {{ form.comment.label }}
-                {{ form.comment }}
-            </div>
-            
-            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-            
-            {{ form.submit }}
+        {% if user.is_authenticated %}
+            <form action="{{ url_for('addComment', id=blog.id) }}" class="form">
+                <div class="form-field">
+                    {{ form.comment.label }}
+                    {{ form.comment }}
+                </div>
+                
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                
+                {{ form.submit }}
 
-            {% include 'constants/flash_messages.html' %}
-        </form>
+                {% include 'constants/flash_messages.html' %}
+            </form>
 
-        <!-- People's comments -->
-        <p>No comments yet. Add a comment.</p>
+            <!-- People's comments -->
+            {% if not blog.comments %}
+                <p>No comments yet. Add a comment.</p>
+            {% else %}
+                {% for comment in blog.comments|list %}
+                    <div class="comment">
+                        <div class="profile-picture">
+                            <img src="{{ comment.comment_author.profile_picture }}" alt="{{ comment.comment_author.full_name }}'s' Profile Picture">
+                        </div>
+                        <div class="comment-details">
+                            <p>{{ comment.comment }}</p>
+                            <p><span>{{ comment.created }}</span></p>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% else %}
+            <p>You must login to have access to the comments section.</p>
+        {% endif %}
 
     </section>
     <!-- END COMMENTS SECTION -->
