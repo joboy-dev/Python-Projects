@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="../static/styles/blog_content/blog.css" media="screen and (max-width: 768px)">
     <link rel="stylesheet" href="../static/styles/blog_content/blog.css" media="screen and (max-width: 480px)">
 
-    <link rel="stylesheet" href="../../static/styles/form/blog-form.css" media="screen and (max-width: 2000px)">
+    <link rel="stylesheet" href="../../static/styles/form/form.css" media="screen and (max-width: 2000px)">
 
 {% endblock %}
 
@@ -55,7 +55,7 @@
 
         <div class="author">
             <div class="profile-picture">
-                <img src="{{ blog.post_author.profile_picture }}" alt="{{ blog.post_author.full_name }}'s' Profile Picture">
+                <img src="../../{{ blog.post_author.profile_picture }}" alt="{{ blog.post_author.full_name }}'s' Profile Picture">
             </div>
             <div class="author-details">
                 <p><b>Author: </b><span>{{ blog.post_author.full_name }}</span></p>
@@ -90,7 +90,7 @@
                 {% for comment in blog.comments %}
                     <div class="comment">
                         <div class="profile-picture">
-                            <img src="{{ comment.comment_author.profile_picture }}" alt="{{ comment.comment_author.full_name }}'s' Profile Picture">
+                            <img src="../../{{ comment.comment_author.profile_picture }}" alt="{{ comment.comment_author.full_name }}'s' Profile Picture">
                         </div>
                         <div class="comment-details">
                             <p class="comment-author">{{ comment.comment_author.full_name }} (<span>{{ comment.comment_author.username }}</span>)</p>
@@ -101,7 +101,7 @@
                 {% endfor %}
             {% endif %}
         {% else %}
-            <p>You must login to have access to the comments section.</p>
+            <p class="no-comments">You must login to have access to the comments section.</p>
         {% endif %}
 
     </section>

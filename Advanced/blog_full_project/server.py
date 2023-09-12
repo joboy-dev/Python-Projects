@@ -28,7 +28,7 @@ class SignUpView(View):
             email = form.email.data
             password = form.password.data
             password2 = form.password2.data
-            profile_picture = 'https://th.bing.com/th?id=OIP.2s7VxdmHEoDKji3gO_i-5QHaHa&w=250&h=250&c=8&rs=1&qlt=90&o=6&pid=3.1&rm=2'
+            profile_picture = f"{app.config['UPLOAD_FOLDER']}/default.jpeg"
             
             if password != password2:
                 message = 'Your passwords do not match.'
@@ -46,7 +46,7 @@ class SignUpView(View):
                     message = 'Thus email is in use.'
                 else:
                     # hash password
-                    hashed_password = generate_password_hash(password, salt_length=8)
+                    hashed_password = generate_password_hash(password, salt_length=16)
                     
                     # Adding to database
                     user = User(
@@ -118,10 +118,16 @@ app.add_url_rule('/logout', view_func=LogoutView.as_view(name='logout'))
 class GetUserDetailsView(View):
     '''View to get details of current logged in user'''
     
+    methods = ['GET', 'POST']
     decorators = [login_required]
     
     def dispatch_request(self):
         change_picture_form = ChangeProfilePictureForm(request.files)
+        
+        if change_picture_form.validate_on_submit() and 'picture' in request.files:
+            flash('Profile picture updated')
+            return redirect(url_for('getUserDetails'))
+        
         return render_template('profile.html', user=current_user, form=change_picture_form)
 
 app.add_url_rule('/profile', view_func=GetUserDetailsView.as_view(name='getUserDetails'))
@@ -176,7 +182,7 @@ class ChangePasswordView(View):
                 elif not is_valid_password(new_password) or not is_valid_password(new_password2):
                     message = 'One of your new passwords is invalid.'
                 else:
-                    new_password_hash = generate_password_hash(new_password, salt_length=8)
+                    new_password_hash = generate_password_hash(new_password, salt_length=16)
                     user.password = new_password_hash
                     
                     session.commit()
@@ -193,26 +199,47 @@ app.add_url_rule('/profile/change-password', view_func=ChangePasswordView.as_vie
 class ChangeProfilePictureView(View):
     '''View to change user profile picture'''
     
-    methods = ['POST']
+    methods = ['GET', 'POST']
     decorators = [login_required]
     
     def dispatch_request(self):
         form = ChangeProfilePictureForm(request.files)
         
-        # if form.validate_on_submit() and 'picture' in request.files:
-        #     return redirect(url_for('getUserDetails'))
+        if request.method == 'POST' and form.validate_on_submit():
+            
+            # check if the post request has the file part
+            if 'picture' not in request.files:
+                flash('No file part')
+            
+            file = form.picture.data
+            
+            if not allowed_file(file.filename):
+                flash('Invalid file format')
+            elif file and allowed_file(file.filename):
+                number = random.randint(1000, 10000000)
+                filename = secure_filename(file.filename)
+                save_path = f"{app.config['UPLOAD_FOLDER']}/{number}-{filename}"
+                print(save_path)
+                # save file
+                file.save(save_path)
+                
+                # update database
+                user = session.query(User).filter_by(id=current_user.id).first()
+                user.profile_picture = save_path
+                session.commit()
+                
+                # update database
+                flash('Profile picture updated')
+                return redirect(url_for('getUserDetails'))
         
-        return redirect(url_for('getUserDetails'))
-        
-        # return render_template('profile.html', form=form, user=current_user)
+        return render_template('forms/change-profile-picture.html', form=form, user=current_user)
     
 app.add_url_rule('/profile/change-profile-picture', view_func=ChangeProfilePictureView.as_view(name='changeProfilePicture'))
 
-# def upload_file():
-#     if request.method == 'POST':
-#         f = request.files['the_file']
-#         f.save('/var/www/uploads/' + secure_filename(f.filename))
 
+# ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ #
+# ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ #
+# ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ #
 
 # ----------------------- BLOG VIEWS ------------------------- #
 

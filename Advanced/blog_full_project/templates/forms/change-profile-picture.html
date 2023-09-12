@@ -35,11 +35,12 @@
 
     <!-- SIGNUP SECTION -->
     <section id="form-container">
-        <form action="{{ url_for('changeProfilePicture') }}" method="post" class="form">
-            {% include 'constants/flash_messages.html' %}
+        <form action="{{ url_for('changeProfilePicture') }}" method="post" class="form" enctype="multipart/form-data">
             {{ form.hidden_tag() }}
-
+            
             <div class="form-field">
+                {% include 'constants/flash_messages.html' %}
+                
                 {{ form.picture.label(class="custom-file-upload") }} 
                 {{ form.picture }}
             </div>

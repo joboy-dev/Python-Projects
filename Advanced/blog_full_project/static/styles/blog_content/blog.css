@@ -151,8 +151,7 @@
     border: 2px solid var(--red-color);
 }
 
-.no-comment {
-    font-size: 20px;
+.no-comments {
     font-weight: bold;
     margin: 2% 10%;
 }

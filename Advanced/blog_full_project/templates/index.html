@@ -44,11 +44,11 @@
                 </div>
             {% endfor %}
 
-                {% if blogs_list|length > 5 %}
+                <!-- {% if blogs_list|length > 5 %}
                     <div class="more-button">
                         <p>Older Posts  <i class="fa-solid fa-arrow-right"></i></p>
                     </div>
-                {% endif %}
+                {% endif %} -->
         {% else %}
             <div class="no-blog">
                 <p>There are no blog posts yet. Click <a href="{{ url_for('addBlog') }}">here</a> to add yours.</p>

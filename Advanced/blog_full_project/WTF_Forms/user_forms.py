@@ -114,6 +114,7 @@ class ChangeProfilePictureForm(FlaskForm):
     
     picture = fields.FileField(
         label='Profile Picture *',
+        validators=[validators.InputRequired(message='Select a file.')]
     )
     
     submit = fields.SubmitField(

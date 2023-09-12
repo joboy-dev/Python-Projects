@@ -3,6 +3,7 @@
 '''
 
 import os
+import random
 
 from flask import Flask, render_template, request, redirect, typing as ft, url_for, flash, abort
 from flask_wtf.csrf import CSRFProtect
@@ -10,8 +11,8 @@ from flask.views import View
 from flask_ckeditor import CKEditor
 from flask_login import LoginManager, login_required, login_url, logout_user, login_user, current_user
 # from flask_uploads import UploadSet, configure_uploads, IMAGES
+from werkzeug.utils import secure_filename
 from werkzeug.security import generate_password_hash, check_password_hash
-# from werkzeug import secure_filename, FileStorage
 
 from dotenv import load_dotenv
 from pathlib import Path
@@ -42,9 +43,14 @@ login_manager = LoginManager()
 login_manager.init_app(app)
 
 # setting up file_upload
-# photos = UploadSet('profile_pictures', IMAGES)
-# app.config['UPLOADED_PHOTOS_DEST'] = 'static/media/profile_pictures'
-# configure_uploads(app, photos)
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
+PROJECT_BASE_DIR = Path(__file__).resolve().parent
+app.config['UPLOAD_FOLDER'] = f'static/media/profile_pictures'
+
+def allowed_file(filename):
+    '''Function to check if a file is allowed'''
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
 
 
 # ----------------------- DATABASE CONFIG ------------------------- #
