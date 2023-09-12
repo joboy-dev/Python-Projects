@@ -48,13 +48,13 @@
 
     <!-- BLOG CONTENT -->
     <section id="profile-content">
+        
         <div class="profile-picture">
             <div class="profile-picture-container">
                 <img src="{{ user.profile_picture }}" alt="My profile picture">
             </div>
-
+            
             <form action="{{ url_for('changeProfilePicture') }}" method="post" class="form">
-                {% include 'constants/flash_messages.html' %}
         
                 <div class="form-field">
                     {{ form.picture.label(style="display: none;") }} 
@@ -64,23 +64,24 @@
                 <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                 
                 {{ form.submit(style="display: none;") }}
-        
+                
                 <button class="change-picture-button"><i class="fa-solid fa-pencil"></i></button>
 
                 <script>
                     document.querySelector('.change-picture-button').addEventListener('click', function() {
                         document.getElementById('picture').click();
                     });
-            
+                    
                     document.getElementById('picture').addEventListener('change', function() {
                         document.getElementById('submit').click();
                     });
                 </script>
             </form>
-
+            
         </div>
-
+        
         <div class="profile-details">
+            {% include 'constants/flash_messages.html' %}
             <h1>{{ user.full_name }}</h1>
             <p><b>Username</b>- {{ user.username }}</p>
             <p><b>Email</b>- {{user.email}}</p><br>

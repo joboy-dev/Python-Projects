@@ -22,7 +22,7 @@ from email_password_regex_check import is_valid_password
 from WTF_Forms.user_forms import SignUpForm, EditProfileForm, LoginForm, ChangeProfilePictureForm, ChangePasswordForm
 from WTF_Forms.blog_forms import AddBlogForm, EditBlogFrom, AddCommentForm
 import models
-from models import BlogPost, User, Comment
+from models import Blog, User, Comment
 
 BASE_DIR = Path(__file__).resolve().parent.parent.parent.parent
 load_dotenv(os.path.join(BASE_DIR, ".env"))

@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block page %}Blog Title{% endblock %}
+{% block page %}{{ blog.title }}{% endblock %}
 
 {% block css_links %}
     <link rel="stylesheet" href="../static/styles/blog_content/blog.css" media="screen and (max-width: 2000px)">
@@ -51,6 +51,8 @@
 
     <!-- BLOG CONTENT -->
     <section id="post-content">
+        {% include 'constants/flash_messages.html' %}
+
         <div class="author">
             <div class="profile-picture">
                 <img src="{{ blog.post_author.profile_picture }}" alt="{{ blog.post_author.full_name }}'s' Profile Picture">
@@ -69,31 +71,31 @@
     <!-- COMMENTS SECTION -->
     <section id="comments-section">
         {% if user.is_authenticated %}
-            <form action="{{ url_for('addComment', id=blog.id) }}" class="form">
+            <form action="{{ url_for('addComment', id=blog.id) }}" method="post" class="form">
+
+                {{ form.hidden_tag() }}
+                
                 <div class="form-field">
                     {{ form.comment.label }}
                     {{ form.comment }}
                 </div>
-                
-                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-                
+                                
                 {{ form.submit }}
-
-                {% include 'constants/flash_messages.html' %}
             </form>
 
             <!-- People's comments -->
             {% if not blog.comments %}
-                <p>No comments yet. Add a comment.</p>
+                <p class="no-comments">No comments yet. Add a comment.</p>
             {% else %}
-                {% for comment in blog.comments|list %}
+                {% for comment in blog.comments %}
                     <div class="comment">
                         <div class="profile-picture">
                             <img src="{{ comment.comment_author.profile_picture }}" alt="{{ comment.comment_author.full_name }}'s' Profile Picture">
                         </div>
                         <div class="comment-details">
-                            <p>{{ comment.comment }}</p>
-                            <p><span>{{ comment.created }}</span></p>
+                            <p class="comment-author">{{ comment.comment_author.full_name }} (<span>{{ comment.comment_author.username }}</span>)</p>
+                            <p class="comment-text">{{ comment.comment }}</p>
+                            <p class="comment-date">{{ comment.created }}</p>
                         </div>
                     </div>
                 {% endfor %}

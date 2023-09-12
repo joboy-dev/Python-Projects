@@ -151,17 +151,13 @@
 }
 
 .flashes {
-    background-color: var(--gray-color);
+    background-color: var(--white-color);
     list-style: none;
     color: var(--red-color);
-    height: 70px;
-    width: 300px;
-    float: right;
     font-weight: bold;
-    font-size: 20px;
-    text-align: center;
-    display: block;
-    align-items: center;
+    font-size: 25px;
+    text-align: left;
+    margin: 2% 0;
 }
 
 

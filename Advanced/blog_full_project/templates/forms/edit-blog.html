@@ -29,6 +29,7 @@
     <section id="form-container">
         <form action="{{ url_for('editBlog', id=blog.id) }}" method="post" class="form">
             {% include 'constants/flash_messages.html' %}
+            {{ form.hidden_tag() }}
 
             <div class="form-field">
                 {{ form.title.label }}
@@ -52,8 +53,6 @@
 
             {{ ckeditor.load() }}
             {{ ckeditor.config(name='blog_content', width=1000, height=500) }}
-            
-            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
             
             {{ form.submit }}
             

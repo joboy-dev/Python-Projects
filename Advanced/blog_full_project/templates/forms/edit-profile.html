@@ -37,6 +37,7 @@
     <section id="form-container">
         <form action="{{ url_for('editProfile') }}" method="post" class="form">
             {% include 'constants/flash_messages.html' %}
+            {{ form.hidden_tag() }}
             
             <div class="form-field">
                 {{ form.full_name.label }} 
@@ -52,9 +53,6 @@
                 {{ form.email.label }} 
                 {{ form.email }}
             </div>
-
-
-            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
             
             {{ form.submit }}
 

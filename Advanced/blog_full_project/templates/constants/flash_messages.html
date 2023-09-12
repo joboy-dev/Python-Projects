@@ -1,4 +1,4 @@
-<!-- {% with messages = get_flashed_messages() %}
+{% with messages = get_flashed_messages() %}
     {% if messages %}
         <ul class="flashes">
         {% for message in messages %}
@@ -6,7 +6,7 @@
         {% endfor %}
         </ul>
     {% endif %}
-{% endwith %} -->
+{% endwith %}
 
 {% if message %}
     <div class="message">
@@ -20,5 +20,12 @@
         // set the style of the element to display nothing so it can disappear
         // its like saying display:none in CSS
         flash_message.style.display = "none";
+    }, 5000);
+
+    var flashes = document.querySelector(".flashes");
+    setTimeout(function(){
+        // set the style of the element to display nothing so it can disappear
+        // its like saying display:none in CSS
+        flashes.style.display = "none";
     }, 5000);
 </script>

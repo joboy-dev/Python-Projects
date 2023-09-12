@@ -1,4 +1,3 @@
-from flask import typing as ft
 from __init__ import *
 
 # ----------------------- USER VIEWS ------------------------- #
@@ -8,7 +7,7 @@ class HomeView(View):
     
     def dispatch_request(self):
         # Get request to get all blogs
-        blogs = session.query(BlogPost).all()
+        blogs = session.query(Blog).all()
         return render_template('index.html', blogs=blogs, user=current_user)
     
 app.add_url_rule('/', view_func=HomeView.as_view(name='home'))
@@ -62,7 +61,7 @@ class SignUpView(View):
                     
                     login_user(user)
                     
-                    flash(message='You have successfully signed up')
+                    flash('You have successfully signed up')
                     return redirect(url_for('home'))
 
         return render_template('forms/signup.html', form=form, message=message, user=current_user)
@@ -91,6 +90,7 @@ class LoginView(View):
                 # check for password
                 if check_password_hash(pwhash=user.password, password=password):
                     login_user(user)
+                    flash('Successfully logged in.')
                     return redirect(url_for('home'))
                 else:
                     message = 'Password is incorrect. Try again.'
@@ -109,6 +109,7 @@ class LogoutView(View):
     
     def dispatch_request(self):
         logout_user()
+        flash('Logout successful. See you later.')
         return redirect(url_for('home'))
 
 app.add_url_rule('/logout', view_func=LogoutView.as_view(name='logout'))
@@ -138,18 +139,11 @@ class EditProfileView(View):
         user = database.get_or_404(User, current_user.id)
         form = EditProfileForm(obj=user)
         
-        username_data = session.query(User).filter_by(username=form.username.data).first()
-        email_data = session.query(User).filter_by(email=form.email.data).first()
-        
         if request.method == 'POST' and form.validate_on_submit():
-            # # check if username and email exists
-            # if username_data:
-            #     message = 'This username is taken.'
-            # elif email_data:
-            #     message = 'Thus email is in use.'
-            # else:
             form.populate_obj(user)
             session.commit()
+            
+            flash('Profile changes saved')
             return redirect(url_for('getUserDetails'))
     
         return render_template('forms/edit-profile.html', form=form, user=current_user, message=message)
@@ -165,7 +159,32 @@ class ChangePasswordView(View):
     
     def dispatch_request(self):
         form = ChangePasswordForm(request.form)
-        return render_template('forms/change-password.html', form=form, user=current_user)
+        user = session.query(User).filter_by(username=current_user.username).first()
+        
+        message = None
+        
+        if request.method == 'POST' and form.validate_on_submit():
+            old_password = form.old_password.data
+            new_password = form.new_password.data
+            new_password2 = form.new_password2.data
+            
+            if not check_password_hash(pwhash=user.password, password=old_password):
+                message = 'Old password is incorrect.'
+            else:
+                if new_password != new_password2:
+                    message = 'New passwords do not match.'
+                elif not is_valid_password(new_password) or not is_valid_password(new_password2):
+                    message = 'One of your new passwords is invalid.'
+                else:
+                    new_password_hash = generate_password_hash(new_password, salt_length=8)
+                    user.password = new_password_hash
+                    
+                    session.commit()
+                    
+                    flash('Password changed successfully.')
+                    return redirect(url_for('getUserDetails'))
+                    
+        return render_template('forms/change-password.html', form=form, user=current_user, message=message)
         
     
 app.add_url_rule('/profile/change-password', view_func=ChangePasswordView.as_view(name='changePassword'))
@@ -174,7 +193,7 @@ app.add_url_rule('/profile/change-password', view_func=ChangePasswordView.as_vie
 class ChangeProfilePictureView(View):
     '''View to change user profile picture'''
     
-    methods = ['GET', 'POST']
+    methods = ['POST']
     decorators = [login_required]
     
     def dispatch_request(self):
@@ -205,7 +224,7 @@ class GetUserBlogsView(View):
     def dispatch_request(self):
         print(current_user.id)
         # Check database for blogs for the current logged in user
-        user_blogs = session.query(BlogPost).filter_by(author_id=current_user.id).all()
+        user_blogs = session.query(Blog).filter_by(author_id=current_user.id).all()
         
         return render_template('my-blogs.html', user_blogs=user_blogs, user=current_user)
 
@@ -227,7 +246,7 @@ class AddBlogView(View):
             
             date = get_date()
             
-            blog = BlogPost(
+            blog = Blog(
                 title=form.title.data,
                 subtitle=form.subtitle.data,
                 image_url='https://img.freepik.com/free-photo/toy-bricks-table-with-word-blog_144627-47465.jpg?size=626&ext=jpg&uid=R65046554&ga=GA1.2.163047648.1692182630&semt=sph' if len(form.image_url.data) == 0 else form.image_url.data,
@@ -240,7 +259,8 @@ class AddBlogView(View):
             session.add(blog)
             session.commit()
             
-            return redirect(url_for('home'))
+            flash('Blog post added.')
+            return redirect(url_for('getUserBlogs'))
         
         messages = form.form_errors
         print(messages)
@@ -257,7 +277,7 @@ class EditBlogView(View):
     
     def dispatch_request(self, id):
         message = None
-        blog = database.get_or_404(BlogPost, id)
+        blog = database.get_or_404(Blog, id)
         
         form = EditBlogFrom(obj=blog)
         
@@ -268,6 +288,8 @@ class EditBlogView(View):
             if blog.author_id == current_user.id:
                 blog.updated = date
                 session.commit()
+                
+                flash('Blog post updated.')
                 return redirect(url_for('getBlog', id=blog.id))
             else:
                 message = 'You cannot edit another user\'s post'
@@ -287,7 +309,7 @@ class GetBlogView(View):
         form = AddCommentForm(request.form)
         
         # Filter database for blogs based on id
-        blog =  database.get_or_404(BlogPost, id)
+        blog =  database.get_or_404(Blog, id)
         
         return render_template('blog-detail.html', blog=blog, form=form, user=current_user)
 
@@ -302,11 +324,13 @@ class DeleteBlogView(View):
     def dispatch_request(self, id):
         message = None
         # Filter database for blogs based on id
-        blog =  database.get_or_404(BlogPost, id)
+        blog =  database.get_or_404(Blog, id)
         
         if blog.author_id == current_user.id: 
             session.delete(blog)
             session.commit()
+            
+            flash('Blog post deleted')
             return redirect(url_for('getUserBlogs'))
         else:
             message = 'You cannot delete another user\'s blog.'
@@ -319,9 +343,11 @@ app.add_url_rule('/blog/<int:id>/delete', view_func=DeleteBlogView.as_view(name=
 class AddBlogCommentView(View):
     '''View to add comments to blogs'''
     
+    methods = ['POST']
+    
     def dispatch_request(self, id):
         form = AddCommentForm(request.form)
-        blog = database.get_or_404(BlogPost, id)
+        blog = database.get_or_404(Blog, id)
         
         if request.method == 'POST' and form.validate_on_submit():
             date = get_date()
@@ -331,13 +357,16 @@ class AddBlogCommentView(View):
                 comment=form.comment.data,
                 created=date,
                 blog_id=blog.id,
-                author_is=current_user.id
+                author_id=current_user.id
             )
             
             session.add(comment)
             session.commit()
             
-            return redirect(url_for('getBlog', id=blog.id))
+            flash('Comment added')
+            
+        return redirect(url_for('getBlog', id=blog.id))
+        
         
 app.add_url_rule('/blog/<int:id>/addComment', view_func=AddBlogCommentView.as_view(name='addComment'))
 

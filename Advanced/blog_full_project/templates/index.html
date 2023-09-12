@@ -29,6 +29,8 @@
 
     <!-- BLOG LIST SECTION -->
     <section id="blog-list">
+        {% include 'constants/flash_messages.html' %}
+
         {% if blogs %}
             {% set blogs_list =  blogs|list %}
             

@@ -37,13 +37,12 @@
     <section id="form-container">
         <form action="{{ url_for('changeProfilePicture') }}" method="post" class="form">
             {% include 'constants/flash_messages.html' %}
+            {{ form.hidden_tag() }}
 
             <div class="form-field">
                 {{ form.picture.label(class="custom-file-upload") }} 
                 {{ form.picture }}
             </div>
-
-            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
             
             {{ form.submit }}
 

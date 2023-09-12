@@ -37,6 +37,7 @@
     <section id="form-container">
         <form action="{{ url_for('signup') }}" method="post" class="form">
             {% include 'constants/flash_messages.html' %}
+            {{ form.hidden_tag() }}
 
             <div class="form-field">
                 {{ form.full_name.label }} 
@@ -62,8 +63,6 @@
                 {{ form.password2.label }} 
                 {{ form.password2 }}
             </div>
-
-            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
             
             {{ form.submit }}
             

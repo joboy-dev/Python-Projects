@@ -28,33 +28,35 @@
 
     <!-- BLOG LIST SECTION -->
     <section id="blog-list">
-            {% if user_blogs %}
-                {% set blogs_list =  user_blogs|list %}
+        {% include 'constants/flash_messages.html' %}
 
-                {% for blog in blogs_list|reverse %}
-                    <div class="blog">
-                        <a class="blog-title" href="{{ url_for('getBlog', id=blog.id) }}">{{ blog.title }}</a>
-                        <p class="blog-subtitle">{{ blog.subtitle }}</p>
-                        <p class="attribution">Posted by <b><em>you</em></b> on <em>{{ blog.created }}</em></p>
+        {% if user_blogs %}
+            {% set blogs_list =  user_blogs|list %}
 
-                        <div class="edit-delete-buttons">
-                            <a href="{{ url_for('editBlog', id=blog.id) }}" class="edit"><i class="fa-solid fa-pencil"></i>  Edit</a>
-                            <a href="{{ url_for('deleteBlog', id=blog.id )}}" class="delete"><i class="fa-solid fa-trash"></i>  Delete</a>
-                        </div>
+            {% for blog in blogs_list|reverse %}
+                <div class="blog">
+                    <a class="blog-title" href="{{ url_for('getBlog', id=blog.id) }}">{{ blog.title }}</a>
+                    <p class="blog-subtitle">{{ blog.subtitle }}</p>
+                    <p class="attribution">Posted by <b><em>you</em></b> on <em>{{ blog.created }}</em></p>
 
-                        <hr color="red">
+                    <div class="edit-delete-buttons">
+                        <a href="{{ url_for('editBlog', id=blog.id) }}" class="edit"><i class="fa-solid fa-pencil"></i>  Edit</a>
+                        <a href="{{ url_for('deleteBlog', id=blog.id )}}" class="delete"><i class="fa-solid fa-trash"></i>  Delete</a>
                     </div>
-                {% endfor %}
-<!-- 
-                <div class="more-button">
-                    <p>Older Posts  <i class="fa-solid fa-arrow-right"></i></p>
-                </div> -->
-            {% else %}
-                <div class="no-blog">
-                    <p>You have no blog posts yet. Click <a href="{{ url_for('addBlog') }}">here</a> to add.</p>
+
+                    <hr color="red">
                 </div>
-            {% endif %}
-        </section>
+            {% endfor %}
+<!-- 
+            <div class="more-button">
+                <p>Older Posts  <i class="fa-solid fa-arrow-right"></i></p>
+            </div> -->
+        {% else %}
+            <div class="no-blog">
+                <p>You have no blog posts yet. Click <a href="{{ url_for('addBlog') }}">here</a> to add.</p>
+            </div>
+        {% endif %}
+    </section>
 
 
     <!-- END BLOG LIST SECTION -->

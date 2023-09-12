@@ -1,12 +1,14 @@
 from flask_sqlalchemy import SQLAlchemy
 import sqlalchemy as sa
+from sqlalchemy.orm import relationship
 from flask_login import UserMixin
 
 db = SQLAlchemy()
 
-
-class User(db.Model, UserMixin):
+class User(UserMixin, db.Model):
     '''Users table/model'''
+    
+    __table_name__ = 'user'
     
     id = sa.Column(sa.Integer, primary_key=True)
     full_name = sa.Column(sa.Text, nullable=False)
@@ -15,15 +17,17 @@ class User(db.Model, UserMixin):
     password = sa.Column(sa.String, nullable=False)
     profile_picture = sa.Column(sa.String, nullable=False)
     
-    posts = db.relationship('BlogPost', backref='author', lazy=True)
-    comments = db.relationship('Comment', backref='commenter', lazy=True)
+    posts = relationship('Blog', back_populates='post_author')
+    comments = relationship('Comment', back_populates='comment_author')
     
     def __str__(self):
         return f'{self.id} | {self.username} | {self.email}'
 
 
-class BlogPost(db.Model):
+class Blog(db.Model):
     '''Posts table/model'''
+    
+    __table_name__ = 'blog'
     
     id =  sa.Column(sa.Integer, primary_key=True)
     title = sa.Column(sa.String(50), nullable=False)
@@ -33,10 +37,9 @@ class BlogPost(db.Model):
     created = sa.Column(sa.String)
     updated = sa.Column(sa.String)
     
-    author_id = sa.Column(sa.Integer, sa.ForeignKey('user.id'), nullable=False)
-    post_author = db.relationship('User', backref='blog_posts')
-    comments = db.relationship('Comment', backref='blog_comments')
-    
+    author_id = sa.Column(sa.Integer, sa.ForeignKey('user.id', ondelete='CASCADE'), nullable=False)
+    post_author = relationship('User', back_populates='posts')
+    comments = relationship('Comment', back_populates='parent_post')
     
     def __str__(self):
         return f'{self.title}'
@@ -45,13 +48,15 @@ class BlogPost(db.Model):
 class Comment(db.Model):
     '''Comnents table/model'''
     
+    __table_name__ = 'comment'
+    
     id =  sa.Column(sa.Integer, primary_key=True)
     comment = sa.Column(sa.String, nullable=True)
     created = sa.Column(sa.String)
     
-    blog_id = sa.Column(sa.Integer, sa.ForeignKey('blog_post.id'), nullable=False)
-    blog_commented_on = db.relationship('BlogPost', backref='blog_comment')
+    blog_id = sa.Column(sa.Integer, sa.ForeignKey('blog.id', ondelete='CASCADE'), nullable=False)
+    parent_post = relationship('Blog', back_populates='comments')
     
-    author_id = sa.Column(sa.Integer, sa.ForeignKey('user.id'), nullable=False)
-    comment_author = db.relationship('User', backref='author_comment')
+    author_id = sa.Column(sa.Integer, sa.ForeignKey('user.id', ondelete='CASCADE'), nullable=False)
+    comment_author = relationship('User', back_populates='comments')
     

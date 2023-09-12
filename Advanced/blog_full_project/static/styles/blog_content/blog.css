@@ -31,7 +31,6 @@
     z-index: 0; /* Place it between the content and background image */
 }
 
-
 .post-banner {
     width: 100%;
     height: 100%;
@@ -123,17 +122,15 @@
 /* -------------- COMMENTS SECTION ------------------ */
 
 #comments-section {
-    height: 40vh;
+    height: 50vh;
     overflow-x: hidden;
     overflow-y: auto;
     margin: 2% 10%;
+    animation: moveInFromLeft 1s ease-in;
 }
 
 #comments-section p {
-    margin: 2% 10%;
-    font-size: 30px;
-    font-weight: bold;
-    animation: moveInFromLeft 1s ease-in;
+    font-size: 15px;
 }
 
 /* COMMENT DETAILS */
@@ -142,16 +139,22 @@
     display: flex;
     align-items: center;
     justify-content: start;
-    height: 10vh;
+    width: 100%;
     gap: 40px;
-    margin-bottom: 50px;
+    margin: 20px 10%;
 }
 
 .comment .profile-picture {
-    height: 100px;
-    width: 100px;
+    height: 50px;
+    width: 50px;
     border-radius: 5%;
     border: 2px solid var(--red-color);
+}
+
+.no-comment {
+    font-size: 20px;
+    font-weight: bold;
+    margin: 2% 10%;
 }
 
 .comment .profile-picture img {
@@ -161,8 +164,23 @@
     overflow: hidden;
 }
 
+.comment .comment-details {
+    width: 80%;
+}
+
 .comment .comment-details span {
     color: var(--red-color);
+    font-weight: bold;
+}
+
+.comment .comment-details .comment-text {
     font-weight: normal;
 }
 
+.comment .comment-details .comment-author {
+    font-weight: bold;
+}
+
+.comment .comment-details .comment-date {
+    color: var(--red-color);
+}
