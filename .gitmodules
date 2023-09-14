@@ -1,0 +1,3 @@
+[submodule "Advanced/BlogGlobe"]
+	path = Advanced/BlogGlobe
+	url = https://github.com/joboy-dev/BlogGlobe.git
